@@ -3,44 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ty Thomasson - Author Page</title>
+    <title>Ty Thomasson - Author</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        /* Basic Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
             color: #333;
+            line-height: 1.6;
+            padding: 20px;
         }
 
         header {
-            background-color: #282828;
+            background-color: #333;
             color: white;
-            padding: 20px;
+            padding: 30px 20px;
             text-align: center;
+            border-radius: 8px;
+            margin-bottom: 40px;
         }
 
-        .author-name {
-            font-size: 2.5rem;
-            margin: 0;
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
 
-        .author-bio {
-            font-size: 1.1rem;
+        header p {
+            font-size: 1.2rem;
             margin-top: 10px;
         }
 
         .button {
             display: inline-block;
             margin-top: 30px;
-            padding: 15px 25px;
+            padding: 15px 30px;
             background-color: #4CAF50;
             color: white;
             text-align: center;
             border-radius: 5px;
             text-decoration: none;
-            font-size: 1.1rem;
-            transition: background-color 0.3s ease;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
         }
 
         .button:hover {
@@ -48,57 +57,81 @@
         }
 
         .section {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 40px 20px;
             text-align: center;
         }
 
         .section h2 {
-            font-size: 2rem;
+            font-size: 2.5rem;
             margin-bottom: 20px;
+            color: #333;
         }
 
         .section p {
             font-size: 1.1rem;
             margin-bottom: 30px;
-        }
-
-        footer {
-            background-color: #282828;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            line-height: 1.8;
         }
 
         .preview-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 30px;
+            flex-wrap: wrap;
         }
 
         .preview-links a {
             color: #4CAF50;
             text-decoration: none;
-            font-size: 1.2rem;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 10px;
+            transition: color 0.3s;
         }
 
         .preview-links a:hover {
-            text-decoration: underline;
+            color: #2e8b2e;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .button {
+                padding: 12px 24px;
+                font-size: 1.1rem;
+            }
+
+            .preview-links {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
     </style>
 </head>
 <body>
 
 <header>
-    <h1 class="author-name">Ty Thomasson</h1>
-    <p class="author-bio">Author of *Cyber Restricted* - A thrilling science fiction journey through a controlled digital future.</p>
+    <h1>Ty Thomasson</h1>
+    <p>Author of *Cyber Restricted* - A thrilling science fiction journey through a controlled digital future.</p>
 </header>
 
 <div class="section">
     <h2>About the Author</h2>
-    <p>Ty Thomasson is an emerging science fiction writer, weaving futuristic tales with a touch of mystery and suspense. *Cyber Restricted* is a gripping exploration of a digital world where freedom is limited and power is controlled.</p>
+    <p>Ty Thomasson is a science fiction writer whose stories examine the evolving relationship between humanity and technology. His works, including *Cyber Restricted*, delve into themes of freedom, control, and the consequences of living in a digitally dominated world.</p>
 </div>
 
 <div class="section">
@@ -107,7 +140,7 @@
 
 <div class="section" id="previews">
     <h2>Work in Progress</h2>
-    <p>Explore upcoming projects and sneak peeks into the stories that are still taking shape. From high-stakes adventures to mind-bending twists, there's more coming your way.</p>
+    <p>Take a look at some of the exciting stories Ty is currently developing. Get a glimpse of what’s coming next!</p>
 
     <div class="preview-links">
         <a href="#">The Virtual Maze</a>
