@@ -3,217 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Mind's Edge - Short Story</title>
+    <title>Ty Thomasson - Author</title>
     <style>
-        body {
-            font-family: 'Georgia', serif;
+        /* Basic Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
             color: #333;
-            line-height: 1.8;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            line-height: 1.6;
+            padding: 20px;
         }
 
         header {
             background-color: #333;
             color: white;
+            padding: 30px 20px;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            margin: 1rem;
-            padding: 20px;
-            margin-left: 10%;
-            margin-right: 10%;
-            max-width: 1200px;
-        }
-
-        nav {
-            width: 100%;
-            background-color: #444;
-            padding: 1rem 0;
-            text-align: center;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin: 0 10px;
-            font-size: 1rem;
-        }
-
-        nav a:hover {
-            background-color: #555;
-            border-radius: 5px;
-        }
-
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin: 3rem;
-        }
-
-        h1 {
-            color: #4CAF50;
-            font-size: 2.0rem;
-            margin-bottom: 0.5rem;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        h3 {
-            font-size: 1.6rem;
-            margin-top: 2rem;
-            color: #333;
-        }
-
-        .story-section {
-            background-color: white;
-            padding: 1.5rem;
             border-radius: 8px;
-            margin-bottom: 2rem;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: justify;
-            width: 100%;
-            max-width: 800px;
+            margin-bottom: 40px;
         }
 
-        .story-section p {
-            font-size: 0.85rem;
-            color: #444;
-            margin-bottom: 1.25rem;
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
         }
 
-        .story-title {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+        header p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
             color: #333;
-            text-align: center;
         }
 
-        .story-header {
-            font-size: 1.6rem;
-            margin-bottom: 1.0rem;
-            color: #333;
-            text-align: center;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-            margin-top: 3rem;
-            padding: 2rem 0;
-        }
-
-        .about-section {
-            margin-top: 3rem;
+        .section p {
             font-size: 1.1rem;
+            margin-bottom: 30px;
             line-height: 1.8;
-            text-align: justify;
         }
 
-        @media screen and (min-width: 768px) {
-            .content {
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: space-between;
+        .preview-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .preview-links a {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-weight: bold;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+
+        .preview-links a:hover {
+            color: #2e8b2e;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
             }
 
-            .story-section {
-                width: 48%;
-                margin-bottom: 2rem;
+            .button {
+                padding: 12px 24px;
+                font-size: 1.1rem;
             }
 
-            .footer {
-                font-size: 1rem;
+            .preview-links {
+                flex-direction: column;
+                gap: 20px;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Mind's Edge <br>(Short Story)</h1> 
-        <nav>
-            <a href="/index.html">Home</a>
-            <a href="#about">About</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
 
-    <div class="content">
-        <div class="story-section">
-            <p><strong>About "Mind's Edge":</strong></p>
-            <p>This story was an entry for our class’s 1000-word creative writing contest. Originally over 3000 words, I had to cut it down to fit the contest rules. Despite many outstanding entries, I had the honor of winning the contest on December 9, 2024. This piece explores the struggles of a man facing an uncertain future, highlighting themes of friendship, denial, and the lengths someone will go to in order to cheat death.</p>
-        </div>
+<header>
+    <h1>Ty Thomasson</h1>
+    <p>Author of *Cyber Restricted* - A thrilling science fiction journey through a controlled digital future.</p>
+</header>
 
-        <div class="story-section">
-            <h2 class="story-title">Mind's Edge</h2>
-            <h3 class="story-header">Unspoken Truths</h3>
-            <p>Tom hasn’t been himself lately; something’s off.</p>
-            <p>“Hey, Tom,” I ask, “Are you alright? You’ve been different lately.”</p>
-            <p>He hesitates, eyes darting away, then quietly says, “I was diagnosed with brain cancer a few days ago.”</p>
-            <p>The words hit me like a punch. Why hasn’t he told me? Tom isn’t close with his family, but this feels like more.</p>
-            <p>The air hangs heavy. “Why didn’t you tell me sooner?”</p>
-            <p>“I didn’t know how,” he murmurs, looking down. “I thought I could handle it. Didn’t want to burden anyone.”</p>
-            <p>A lump forms in my throat. “You’re not a burden,” I say, my voice firm. “I’m here. Whatever you need, you’re not alone.”</p>
-            <p>A flicker of relief crosses his face, but it fades quickly. “I’m not sure anyone can do anything for me now.”</p>
-            <p>“Well, I’m still going to try,” I say, trying to pull him from his spiral.</p>
-            <p>He doesn’t respond, but a faint, strained smile appears. Maybe it’s a start.</p>
+<div class="section">
+    <h2>About the Author</h2>
+    <p>Ty Thomasson is a science fiction writer whose stories examine the evolving relationship between humanity and technology. His works, including *Cyber Restricted*, delve into themes of freedom, control, and the consequences of living in a digitally dominated world.</p>
+</div>
 
-            <h3 class="story-header">Desperate Measures</h3>
-            <p>Days pass, but something’s still off. Tom’s opened up a little, but he’s retreating. He’s spending longer hours in the lab, locking the door behind him.</p>
-            <p>One evening, after Tom leaves, I stay behind. I notice a drawer in his workstation slightly ajar. Curiosity pulls me closer, and I find papers filled with intricate diagrams and formulas. One in particular catches my eye— “Neural implant,” “memory transfer,” and “neural integration.” A cold shiver runs down my spine as the words sink in.</p>
-            <p>Tom’s not just trying to survive; he’s trying to cheat death.</p>
-            <p>Footsteps snap me from my thoughts. I shove the papers back just as Tom enters, eyes flashing with panic before he masks it with a forced smile.</p>
-            <p>“Didn’t expect you here, Axel.”</p>
-            <p>“Just wondering what you’ve been working on,” I reply, trying to sound casual.</p>
-            <p>He stiffens. “Just making the most of my time.”</p>
-            <p>I step closer. “Tom, I saw the papers. What are you planning?”</p>
-            <p>“I’m dying, Axel,” he says, looking away. “Doctors gave me months. I have to do this.”</p>
-            <p>A knot tightens in my chest. “You want to upload yourself?”</p>
-            <p>“It’s not perfect, but it’s close,” he murmurs. “This isn’t just for me. It could save others—imagine a world where no one has to die.”</p>
-            <p>“Or one where people are trapped in ways we can’t even understand,” I counter. “This is dangerous, Tom.”</p>
-            <p>“What’s the alternative? Waiting for the end?” He hardens. “I won’t do that.”</p>
-            <p>“You’re playing with fire,” I insist. “You can’t control this. Once you cross that line, there’s no going back.”</p>
-            <p>He laughs bitterly. “I’m already past it. I just need more time.”</p>
-            <p>“Tom, this isn’t living. It’s something else.”</p>
-            <p>He meets my gaze. “You can’t stop me, Axel. If you’re my friend, support me. Or stay out of my way.”</p>
-            <p>I hesitate, a lump forming in my throat. “I won’t stay out of your way. I’ll stop you if I have to.”</p>
-            <p>He doesn’t respond, but the tension in his shoulders is clear. I know this is just the beginning. Whatever he’s planning, I need to be ready.</p>
+<div class="section">
+    <a href="#previews" class="button">Previews of New Stories</a>
+</div>
 
-            <h3 class="story-header">The Prototype</h3>
-            <p>Weeks blur into a haze. Tom’s more withdrawn than ever. Every time I try to break through, he dodges, evades, deflects.</p>
-            <p>One night, I got a message: “Meet me at the lab. I need your help.” No details, no context. Just those words.</p>
-            <p>I go against my better judgment. This might be my only chance to find out what he’s really been up to.</p>
-            <p>When I arrive, the lab is shrouded in shadows. The lab, usually filled with the hum of machines, is eerily silent. Only the faint glow of a workbench light illuminates the space. Tom stands at a workbench, his back to me. On the table is a sleek, metallic device—small, intricate, and undeniably menacing.</p>
-            <p>“Tom, what is this?” My voice is tight.</p>
-            <p>“It’s a prototype,” he says, not turning around. “A neural implant. I need your help to test it.”</p>
-            <p>“A neural implant?” I frown, confused. “What does it do?”</p>
-            <p>“It integrates directly with the brain—no lag, no barriers. It can regulate thoughts, suppress impulses. Imagine the possibilities. We could eliminate pain, anxiety, fear—anything that holds us back.”</p>
-            <p>A chill crawls up my spine. “Tom, this isn’t just about helping people, is it?”</p>
-            <p>“It’s about control,” he says, his voice hardening. “Control over what holds us back.”</p>
-            <p>“Or control over people,” I retort, my voice trembling.</p>
-            <p>Tom doesn’t respond, but his eyes gleam with a fierce intensity. I realize then that this isn’t about saving lives. It’s about redefining what it means to be human.</p>
-            <p>And the more I think about it, the more I realize—maybe Tom’s already gone too far.</p>
-        </div>
+<div class="section" id="previews">
+    <h2>Work in Progress</h2>
+    <p>Take a look at some of the exciting stories Ty is currently developing. Get a glimpse of what’s coming next!</p>
+
+    <div class="preview-links">
+        <a href="#">Cyber Restricted</a>
+        <a href="/previews/contests/minds-edge.html">Mind's Edge (Axel)</a>
+        <a href="#">Mort Phobus</a>
     </div>
+</div>
 
-    <footer class="footer">
-        <p>Story originally created for the <strong>Creative Writing Contest</strong>. © 2024 by Ty Thomasson.</p>
-    </footer>
+<footer>
+    <p>&copy; 2024 Ty Thomasson - All Rights Reserved</p>
+</footer>
+
 </body>
 </html>
