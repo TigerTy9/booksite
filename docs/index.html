@@ -3,155 +3,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ty Thomasson - Author</title>
+    <title>Ty Thomasson - Sci-Fi Author</title>
     <style>
-        /* Basic Reset */
-        * {
+        body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
+            background-color: #1c1c2e;
+            color: #f0f0f0;
         }
 
         header {
-            background-color: #333;
-            color: white;
-            padding: 30px 20px;
+            background: linear-gradient(to right, #ffb347, #ffcc33, #4287f5);
+            padding: 20px;
             text-align: center;
-            border-radius: 8px;
-            margin-bottom: 40px;
+            color: #1c1c2e;
         }
 
         header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
+            margin: 0;
+            font-size: 3em;
+            font-weight: bold;
         }
 
-        header p {
-            font-size: 1.2rem;
-            margin-top: 10px;
+        nav {
+            display: flex;
+            justify-content: center;
+            background: #2d2d44;
+            padding: 10px 0;
         }
 
-        .button {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 15px 30px;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
+        nav a {
+            color: #f0f0f0;
             text-decoration: none;
-            font-size: 1.2rem;
-            transition: background-color 0.3s;
+            margin: 0 15px;
+            font-size: 1.2em;
         }
 
-        .button:hover {
-            background-color: #45a049;
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            text-align: center;
+            margin-bottom: 50px;
         }
 
         .section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #333;
+            color: #ffcc33;
+            font-size: 2.5em;
+            margin-bottom: 15px;
         }
 
-        .section p {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            line-height: 1.8;
-        }
-
-        .preview-links {
+        .books, .samples, .shortstories, .special-area {
             display: flex;
-            justify-content: center;
-            gap: 30px;
             flex-wrap: wrap;
+            gap: 20px;
+        }
+      
+        .card-link {
+            text-decoration: none; /* Remove underline from link */
+            color: inherit; /* Inherit text color */
+            display: inline-block; /* Make the entire card clickable */
         }
 
-        .preview-links a {
-            color: #4CAF50;
-            text-decoration: none;
-            font-size: 1.4rem;
-            font-weight: bold;
-            padding: 10px;
-            transition: color 0.3s;
+        .card {
+            background: #2d2d44;
+            border: 2px solid #ffcc33;
+            border-radius: 8px;
+            padding: 15px;
+            max-width: 300px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth hover animation */
         }
 
-        .preview-links a:hover {
-            color: #2e8b2e;
+        .card:hover {
+            transform: scale(1.05); /* Slight zoom effect */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .card h3 {
+            font-size: 1.5em;
+            margin: 10px 0;
+            color: #ffcc33;
         }
 
         footer {
-            background-color: #333;
-            color: white;
+            background: #2d2d44;
             text-align: center;
-            padding: 20px 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
+            padding: 20px;
+            color: #f0f0f0;
+            font-size: 0.9em;
         }
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5rem;
-            }
+        footer a {
+            color: #ffcc33;
+            text-decoration: none;
+        }
 
-            .button {
-                padding: 12px 24px;
-                font-size: 1.1rem;
-            }
-
-            .preview-links {
-                flex-direction: column;
-                gap: 20px;
-            }
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
+    <header>
+        <h1>Ty Thomasson - Sci-Fi Distopian Tales</h1>
+        <p>Welcome to my universe of controlled thoughts and rebellion.</p>
+    </header>
 
-<header>
-    <h1>Ty Thomasson</h1>
-    <p>Author of *Cyber Restricted* - A thrilling science fiction journey through a controlled digital future.</p>
-</header>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#store">Store</a>
+        <a href="#samples">Samples</a>
+        <a href="#shortstories">Short Stories</a>
+        <a href="#special">Special Area</a>
+    </nav>
 
-<div class="section">
-    <h2>About the Author</h2>
-    <p>Ty Thomasson is a science fiction writer whose stories examine the evolving relationship between humanity and technology. His works, including *Cyber Restricted*, delve into themes of freedom, control, and the consequences of living in a digitally dominated world.</p>
-</div>
+    <main>
+        <section id="home" class="section">
+            <h2>About the Author</h2>
+            <p>Explore the mind of Ty Thomasson, a sci-fi author delving into dystopian worlds and the depths of human control. Here you’ll find books, short stories, and audiobooks that challenge the boundaries of thought and existence.</p>
+        </section>
 
-<div class="section">
-    <a href="#previews" class="button">Previews of New Stories</a>
-</div>
+        <section id="store" class="section">
+            <h2>Store</h2>
+            <div class="books">
+                <div class="card">
+                    <img src="cyber-restricted.jpg" alt="Cyber Restricted Book Cover">
+                    <h3>Cyber Restricted</h3>
+                    <p>A world governed by thought control devices. Will rebellion break the chains of the mind?</p>
+                    <button>Buy Now</button>
+                </div>
+                <!-- Additional book cards can be added here -->
+            </div>
+        </section>
 
-<div class="section" id="previews">
-    <h2>Work in Progress</h2>
-    <p>Take a look at some of the exciting stories Ty is currently developing. Get a glimpse of what’s coming next!</p>
+        <section id="shortstories" class="section">
+            <h2>Short Stories</h2>
+            <div class="shortstories">
+                <a href="TheMindsEdge.html" target="_blank" class="card-link">
+                    <div class="card">
+                        <h3>The Mind's Edge</h3>
+                        <p>This story, cut down from 3000 words, won a 1000-word creative writing contest on December 9, 2024. It explores a man's struggle with an uncertain future and themes of friendship, denial, and defying death.</p>
+                    </div>
+                </a>
+                         
+            </div>
+        </section>
 
-    <div class="preview-links">
-        <a href="#">Cyber Restricted</a>
-        <a href="/previews/contests/minds-edge.html">Mind's Edge (Axel)</a>
-        <a href="#">Mort Phobus</a>
-    </div>
-</div>
+        <section id="samples" class="section">
+            <h2>Samples and Short Stories</h2>
+            <div class="samples">
+                <a href="CyberRestrictedSample.html" target="_blank" class="card-link">
+                    <div class="card">
+                        <h3>Cyber Restricted - Prologue</h3>
+                        <p>A gripping intro into a controlled world where thoughts are not your own.</p>
+                    </div>
+                </a>
+                <a href="CyberRestrictedAudioSample.html" target="_blank" class="card-link">
+                    <div class="card">
+                        <h3>Cyber Restricted Audiobook Sample</h3>
+                        <p>Listen to a snippet from *Cyber Restricted*. Narrated with intensity and immersion.</p>
+                    </div>
+                </a>
+                         
+            </div>
+        </section>
 
-<footer>
-    <p>&copy; 2024 Ty Thomasson - All Rights Reserved</p>
-</footer>
+        <section id="special" class="section">
+            <h2>Exclusive Content</h2>
+            <p>If you’ve purchased a book, enter your code below to access behind-the-scenes notes, exclusive stories, and bonus audiobooks.</p>
+            <form action="#">
+                <input type="text" placeholder="Enter Code" required>
+                <button>Submit</button>
+            </form>
+        </section>
+    </main>
 
+    <footer>
+        <p>&copy; 2024 Ty Thomasson. All rights reserved. | <a href="#">Privacy Policy</a></p>
+    </footer>
 </body>
 </html>
