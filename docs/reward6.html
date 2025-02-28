@@ -11,7 +11,7 @@
             font-family: 'Courier New', monospace;
             text-align: center;
             padding-top: 50px;
-            display: none; /* Page is hidden by default */
+            display: block; /* Page is visible by default */
         }
     </style>
     <script>
@@ -36,16 +36,16 @@
                 console.log("Reward unlock check:", data); // Debugging log to see the response
 
                 if (!data.unlocked) {
-                    // If the reward isn't unlocked, redirect to catalogue
-                    window.location.href = "catalogue.html";
+                    // If the reward isn't unlocked, show a message
+                    document.body.innerHTML = "<h1>Oops!</h1><p>You have not unlocked this reward yet.</p>";
                 } else {
-                    // If unlocked, show the page
-                    document.body.style.display = "block";
+                    // If unlocked, show the congratulations message
+                    document.body.innerHTML = "<h1>🎉 Congratulations!</h1><p>You've unlocked this special reward!</p>";
                 }
             } catch (error) {
                 console.error("Error verifying reward:", error);
-                // If error, redirect to catalogue
-                window.location.href = "catalogue.html";
+                // If error, show a message about the error
+                document.body.innerHTML = "<h1>Error</h1><p>There was an issue verifying your reward. Please try again later.</p>";
             }
         }
 
@@ -53,7 +53,6 @@
     </script>
 </head>
 <body>
-    <h1>🎉 Congratulations!</h1>
-    <p>You've unlocked this special reward!</p>
+    <!-- Content will be dynamically inserted by the script -->
 </body>
 </html>
