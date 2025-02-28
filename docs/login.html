@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cyber Restricted</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 100px;
+        }
+        input {
+            background: black;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            background: #0f0;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Login to Cyber Restricted</h1>
+    <p>Enter your username and password to log in:</p>
+    <input type="text" id="username" placeholder="Username">
+    <br>
+    <input type="password" id="password" placeholder="Password">
+    <br>
+    <button onclick="login()">Login</button>
+    <p id="fail" class="hidden">❌ Incorrect username or password. Try again.</p>
+    <p>Don't have an account? <a href="register.html" style="color: #0f0;">Register here</a></p>
+
+    <script>
+        async function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            const data = await response.json();
+
+            if (data.token) {
+                localStorage.setItem('jwt', data.token);
+                window.location.href = 'catalogue.html';  // Redirect to catalogue page
+            } else {
+                document.getElementById('fail').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
