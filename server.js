@@ -66,7 +66,25 @@ app.post('/signup', async (req, res) => {
 // Reward Route
 app.get('/reward', (req, res) => {
     if (!req.session.user) {
-        return res.redirect('/login.html');  // Redirect to login if not logged in
+        // If not logged in, show options to log in or sign up
+        return res.send(`
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Access Reward</title>
+            </head>
+            <body>
+                <h1>Welcome to the Reward Page</h1>
+                <p>You must log in or create an account to unlock your reward.</p>
+                <p>
+                    <a href="/login.html">Log in</a><br>
+                    <a href="/signup.html">Create an Account</a>
+                </p>
+            </body>
+            </html>
+        `);
     }
 
     // Inject user data into the reward page (e.g., username)
