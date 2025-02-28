@@ -11,7 +11,18 @@
             font-family: 'Courier New', monospace;
             text-align: center;
             padding-top: 50px;
-            display: block; /* Page is visible by default */
+        }
+
+        .pdf-container {
+            width: 100%;
+            height: 80vh;
+            margin-top: 30px;
+        }
+
+        .error-message {
+            font-size: 1.5em;
+            color: red;
+            margin-top: 50px;
         }
     </style>
     <script>
@@ -36,17 +47,33 @@
                 console.log("Reward unlock check:", data); // Debugging log to see the response
 
                 if (!data.unlocked) {
-                    // If the reward isn't unlocked, show a message
-                    document.body.innerHTML = "<h1>Oops!</h1><p>You have not unlocked this reward yet.</p>";
+                    // If the reward isn't unlocked, show an error message
+                    document.body.innerHTML = `<div class="error-message">You have not unlocked this reward yet. Please check the catalogue.</div>`;
                 } else {
-                    // If unlocked, show the congratulations message
-                    document.body.innerHTML = "<h1>🎉 Congratulations!</h1><p>You've unlocked this special reward!</p>";
+                    // If unlocked, display the PDF viewer
+                    showPDF();
                 }
             } catch (error) {
                 console.error("Error verifying reward:", error);
-                // If error, show a message about the error
-                document.body.innerHTML = "<h1>Error</h1><p>There was an issue verifying your reward. Please try again later.</p>";
+                // If error, show an error message
+                document.body.innerHTML = `<div class="error-message">There was an issue verifying your reward. Please try again later.</div>`;
             }
+        }
+
+        function showPDF() {
+            // Create an iframe to show the PDF
+            const pdfContainer = document.createElement('div');
+            pdfContainer.classList.add('pdf-container');
+            const iframe = document.createElement('iframe');
+            iframe.src = 'MortPhobus.pdf'; // Set the path to the PDF
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.type = 'application/pdf';
+            pdfContainer.appendChild(iframe);
+
+            // Append the PDF container to the body
+            document.body.innerHTML = ''; // Clear existing content
+            document.body.appendChild(pdfContainer);
         }
 
         window.onload = checkAccess;
