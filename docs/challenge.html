@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenge Attempt</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .hidden { display: none; }
+        button {
+            padding: 10px;
+            background-color: #0f0;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        async function loadChallenge() {
+            const params = new URLSearchParams(window.location.search);
+            const challengeId = params.get("id");
+
+            if (!challengeId) {
+                document.getElementById("error").textContent = "Invalid challenge!";
+                return;
+            }
+
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/challenges/get?id=" + challengeId, {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (!response.ok) {
+                    document.getElementById("error").textContent = "Failed to load challenge.";
+                    return;
+                }
+
+                const data = await response.json();
+                document.getElementById("challenge-title").textContent = data.name;
+                document.getElementById("challenge-description").textContent = data.description;
+                document.getElementById("challenge-content").classList.remove("hidden");
+            } catch (error) {
+                document.getElementById("error").textContent = "Error loading challenge.";
+            }
+        }
+
+        function submitAnswer() {
+            alert("Answer submitted! (Implement validation later)");
+        }
+
+        window.onload = loadChallenge;
+    </script>
+</head>
+<body>
+    <h1 id="challenge-title"></h1>
+    <p id="challenge-description"></p>
+    <div id="error" style="color: red;"></div>
+    <div id="challenge-content" class="hidden">
+        <input type="text" id="answer" placeholder="Enter your answer">
+        <button onclick="submitAnswer()">Submit</button>
+    </div>
+</body>
+</html>
