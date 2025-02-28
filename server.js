@@ -59,7 +59,7 @@ app.post("/api/challenges/complete", authenticateJWT, async (req, res) => {
     }
 });
 
-app.get("/api/rewards/list", authenticate, async (req, res) => {
+app.get("/api/rewards/list", authenticateJWT, async (req, res) => {
     const userFile = `users/${req.user.username}.json`;
 
     try {
@@ -70,7 +70,7 @@ app.get("/api/rewards/list", authenticate, async (req, res) => {
     }
 });
 
-app.post("/api/rewards/check", authenticate, async (req, res) => {
+app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
     const { rewardId } = req.body;
     const userFile = `users/${req.user.username}.json`;
 
