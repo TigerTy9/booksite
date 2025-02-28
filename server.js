@@ -47,7 +47,7 @@ app.post('/login', async (req, res) => {
 
     if (match) {
         req.session.user = user;
-        res.redirect('/challenge.html');  // Redirect to challenge page after login
+        res.redirect('/challenges.html');  // Redirect to challenges page after login
     } else {
         res.send('Incorrect password');
     }
@@ -63,7 +63,7 @@ app.post('/signup', async (req, res) => {
     const user = {
         username,
         password: hashedPassword,
-        challengeCode: null // Initially, no code has been entered
+        challengesCompleted: [] // Track completed challenges
     };
 
     // Save the user to a JSON file
@@ -72,9 +72,9 @@ app.post('/signup', async (req, res) => {
     res.redirect('/login.html');
 });
 
-// Challenge Route - Users must input the correct code
-app.post('/submit-code', (req, res) => {
-    const { username, code } = req.body;
+// Challenge Route - Users can submit answers to challenges
+app.post('/submit-challenge', (req, res) => {
+    const { username, challengeId, answer } = req.body;
 
     const userFilePath = getUserFilePath(username);
 
@@ -84,22 +84,33 @@ app.post('/submit-code', (req, res) => {
 
     const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
 
-    // Store the challenge code in the user's data
-    user.challengeCode = code;
+    // Simulate checking the challenge answer (replace with actual logic)
+    if (answer === 'correct-answer') {
+        // Mark the challenge as completed
+        user.challengesCompleted.push(challengeId);
+        fs.writeFileSync(userFilePath, JSON.stringify(user));
 
-    // Save the updated user data
-    fs.writeFileSync(userFilePath, JSON.stringify(user));
-
-    res.redirect('/reward-chapter-6.html');  // Redirect to protected reward page
+        res.redirect('/rewards.html');  // Redirect to rewards page after completing a challenge
+    } else {
+        res.send('Incorrect answer, please try again.');
+    }
 });
 
-// Protected Reward Page Route
-app.get('/reward-chapter-6', (req, res) => {
+// Challenges Page - Display all available challenges to the user
+app.get('/challenges', (req, res) => {
     if (!req.session.user) {
         return res.redirect('/login.html');  // Redirect to login if not logged in
     }
 
-    const userFilePath = getUserFilePath(req.session.user.username);
+    // Simulate challenge data (replace with your real challenges)
+    const challenges = [
+        { id: 'challenge1', description: 'Solve this problem to unlock reward 1.' },
+        { id: 'challenge2', description: 'Solve this problem to unlock reward 2.' },
+        { id: 'challenge3', description: 'Solve this problem to unlock reward 3.' }
+    ];
+
+    const username = req.session.user.username;
+    const userFilePath = getUserFilePath(username);
 
     if (!fs.existsSync(userFilePath)) {
         return res.send('User data not found');
@@ -107,23 +118,78 @@ app.get('/reward-chapter-6', (req, res) => {
 
     const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
 
-    // Check if the user has entered the correct challenge code
-    if (user.challengeCode !== 'correct-code') {
-        return res.send('You have not completed the challenge correctly.');
-    }
+    // Render challenge page with available challenges and completed challenges
+    let challengesHTML = challenges.map(challenge => {
+        const completed = user.challengesCompleted.includes(challenge.id) ? 'Completed' : 'Not completed';
+        return `<li>${challenge.description} - Status: ${completed}</li>`;
+    }).join('');
 
-    // If the code is correct, display the reward page
     res.send(`
         <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Reward Chapter 6</title>
+            <title>Challenges</title>
         </head>
         <body>
-            <h1>Congratulations, ${req.session.user.username}!</h1>
-            <p>You have successfully completed the challenge and unlocked Chapter 6!</p>
+            <h1>Welcome, ${username}</h1>
+            <h2>Your Challenges:</h2>
+            <ul>
+                ${challengesHTML}
+            </ul>
+            <a href="/rewards.html">View Rewards</a><br>
+            <a href="/logout">Logout</a>
+        </body>
+        </html>
+    `);
+});
+
+// Rewards Page - Display unlocked rewards
+app.get('/rewards', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login.html');  // Redirect to login if not logged in
+    }
+
+    const username = req.session.user.username;
+    const userFilePath = getUserFilePath(username);
+
+    if (!fs.existsSync(userFilePath)) {
+        return res.send('User data not found');
+    }
+
+    const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
+
+    // Simulate rewards based on completed challenges (replace with actual logic)
+    const rewards = [
+        { id: 'reward1', description: 'Reward 1 unlocked for completing Challenge 1.' },
+        { id: 'reward2', description: 'Reward 2 unlocked for completing Challenge 2.' },
+        { id: 'reward3', description: 'Reward 3 unlocked for completing Challenge 3.' }
+    ];
+
+    let unlockedRewards = rewards.filter(reward => user.challengesCompleted.includes(reward.id));
+
+    if (unlockedRewards.length === 0) {
+        unlockedRewards = [{ description: 'No rewards unlocked yet. Complete challenges to unlock rewards!' }];
+    }
+
+    let rewardsHTML = unlockedRewards.map(reward => `<li>${reward.description}</li>`).join('');
+
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Your Rewards</title>
+        </head>
+        <body>
+            <h1>Congratulations, ${username}!</h1>
+            <h2>Your Unlocked Rewards:</h2>
+            <ul>
+                ${rewardsHTML}
+            </ul>
+            <a href="/challenges.html">Back to Challenges</a><br>
             <a href="/logout">Logout</a>
         </body>
         </html>
