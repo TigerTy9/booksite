@@ -81,7 +81,7 @@ app.get('/rewards', authenticateJWT, async (req, res) => {
     const userData = await fs.readJson(userFilePath);
     res.json({ rewards: userData.rewards });
 });
-s
+
 // Start the server with HTTPS
 https.createServer(credentials, app).listen(PORT, () => {
     console.log(`Server running on https://localhost:${PORT}`);
