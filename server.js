@@ -53,7 +53,6 @@ app.post('/login', async (req, res) => {
     }
 });
 
-const fs = require('fs');
 const path = require('path');
 
 // Helper function to get the user file path
