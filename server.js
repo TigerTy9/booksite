@@ -11,9 +11,8 @@ const PORT = 3000;
 // SSL certificate and key (update these paths with your actual file locations)
 const privateKey = fs.readFileSync('certs/private.key.pem', 'utf8');
 const certificate = fs.readFileSync('certs/domain.cert.pem', 'utf8');
-const ca = fs.readFileSync('path/to/ca.pem', 'utf8');
 
-const credentials = { key: privateKey, cert: certificate, ca: ca };
+const credentials = { key: privateKey, cert: certificate };
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
