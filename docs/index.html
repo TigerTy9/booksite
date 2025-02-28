@@ -3,195 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ty Thomasson - Sci-Fi Author</title>
+    <title>Cyber Restricted - Chapter 6</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1c1c2e;
-            color: #f0f0f0;
-        }
-
-        header {
-            background: linear-gradient(to right, #ffb347, #ffcc33, #4287f5);
-            padding: 20px;
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
             text-align: center;
-            color: #1c1c2e;
+            padding-top: 50px;
         }
-
-        header h1 {
-            margin: 0;
-            font-size: 3em;
-            font-weight: bold;
-        }
-
-        nav {
-            display: flex;
-            justify-content: center;
-            background: #2d2d44;
-            padding: 10px 0;
-        }
-
-        nav a {
-            color: #f0f0f0;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.2em;
-        }
-
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        main {
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section {
-            margin-bottom: 50px;
-        }
-
-        .section h2 {
-            color: #ffcc33;
-            font-size: 2.5em;
-            margin-bottom: 15px;
-        }
-
-        .books, .samples, .shortstories, .special-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-      
-        .card-link {
-            text-decoration: none; /* Remove underline from link */
-            color: inherit; /* Inherit text color */
-            display: inline-block; /* Make the entire card clickable */
-        }
-
-        .card {
-            background: #2d2d44;
-            border: 2px solid #ffcc33;
-            border-radius: 8px;
-            padding: 15px;
-            max-width: 300px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add smooth hover animation */
-        }
-
-        .card:hover {
-            transform: scale(1.05); /* Slight zoom effect */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Add a shadow on hover */
-        }
-
-        .card img {
-            width: 100%;
-            border-radius: 8px;
-        }
-
-        .card h3 {
-            font-size: 1.5em;
-            margin: 10px 0;
-            color: #ffcc33;
-        }
-
-        footer {
-            background: #2d2d44;
+        input, button {
+            background: black;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
             text-align: center;
-            padding: 20px;
-            color: #f0f0f0;
-            font-size: 0.9em;
         }
-
-        footer a {
-            color: #ffcc33;
-            text-decoration: none;
+        button {
+            cursor: pointer;
+            margin-top: 10px;
         }
-
-        footer a:hover {
-            text-decoration: underline;
+        button:hover {
+            background: #080;
+        }
+        .hidden {
+            display: none;
         }
     </style>
+    <script>
+        async function checkPassword() {
+            const input = document.getElementById("password").value;
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Stored SHA-256 hash of "Dd^i,z8IZ6Z3\Q"
+            const correctHash = "67a8771653fcfa14ad7eea00acdbe3737c96af9a8cb44d418304d63c1085d74e";
+
+            if (hashHex === correctHash) {
+                document.getElementById("success").classList.remove("hidden");
+                document.getElementById("fail").classList.add("hidden");
+                setTimeout(() => { window.location.href = "catalog.html"; }, 2000);
+            } else {
+                document.getElementById("fail").classList.remove("hidden");
+                document.getElementById("success").classList.add("hidden");
+            }
+        }
+    </script>
 </head>
 <body>
-    <header>
-        <h1>Ty Thomasson - Sci-Fi Distopian Tales</h1>
-        <p>Welcome to my universe of controlled thoughts and rebellion.</p>
-    </header>
+    <h1>🔐 Chapter 6 Decryption Challenge</h1>
+    <p>Enter the decrypted code from the book:</p>
+    <input type="text" id="password" placeholder="Enter the code...">
+    <br>
+    <button onclick="checkPassword()">Submit</button>
 
-    <nav>
-        <a href="#home">Home</a>
-        <a href="#store">Store</a>
-        <a href="#samples">Samples</a>
-        <a href="#shortstories">Short Stories</a>
-        <a href="#special">Special Area</a>
-    </nav>
-
-    <main>
-        <section id="home" class="section">
-            <h2>About the Author</h2>
-            <p>Explore the mind of Ty Thomasson, a sci-fi author delving into dystopian worlds and the depths of human control. Here you’ll find books, short stories, and audiobooks that challenge the boundaries of thought and existence.</p>
-        </section>
-
-        <section id="store" class="section">
-            <h2>Store</h2>
-            <div class="books">
-                <div class="card">
-                    <img src="cyber-restricted.jpg" alt="Cyber Restricted Book Cover">
-                    <h3>Cyber Restricted</h3>
-                    <p>A world governed by thought control devices. Will rebellion break the chains of the mind?</p>
-                    <button>Buy Now</button>
-                </div>
-                <!-- Additional book cards can be added here -->
-            </div>
-        </section>
-
-        <section id="shortstories" class="section">
-            <h2>Short Stories</h2>
-            <div class="shortstories">
-                <a href="TheMindsEdge.html" target="_blank" class="card-link">
-                    <div class="card">
-                        <h3>The Mind's Edge</h3>
-                        <p>This story, cut down from 3000 words, won a 1000-word creative writing contest on December 9, 2024. It explores a man's struggle with an uncertain future and themes of friendship, denial, and defying death.</p>
-                    </div>
-                </a>
-                         
-            </div>
-        </section>
-
-        <section id="samples" class="section">
-            <h2>Samples and Short Stories</h2>
-            <div class="samples">
-                <a href="CyberRestrictedSample.html" target="_blank" class="card-link">
-                    <div class="card">
-                        <h3>Cyber Restricted - Prologue</h3>
-                        <p>A gripping intro into a controlled world where thoughts are not your own.</p>
-                    </div>
-                </a>
-                <a href="CyberRestrictedAudioSample.html" target="_blank" class="card-link">
-                    <div class="card">
-                        <h3>Cyber Restricted Audiobook Sample</h3>
-                        <p>Listen to a snippet from *Cyber Restricted*. Narrated with intensity and immersion.</p>
-                    </div>
-                </a>
-                         
-            </div>
-        </section>
-
-        <section id="special" class="section">
-            <h2>Exclusive Content</h2>
-            <p>If you’ve purchased a book, enter your code below to access behind-the-scenes notes, exclusive stories, and bonus audiobooks.</p>
-            <form action="#">
-                <input type="text" placeholder="Enter Code" required>
-                <button>Submit</button>
-            </form>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Ty Thomasson. All rights reserved. | <a href="#">Privacy Policy</a></p>
-    </footer>
+    <p id="success" class="hidden">✅ Correct! Redirecting...</p>
+    <p id="fail" class="hidden">❌ Incorrect. Try again.</p>
 </body>
 </html>
