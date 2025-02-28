@@ -38,26 +38,33 @@
         }
     </style>
     <script>
-        async function checkPassword() {
-            const input = document.getElementById("password").value;
-            const encoder = new TextEncoder();
-            const data = encoder.encode(input);
-            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    async function checkPassword() {
+    const input = document.getElementById("password").value;
+    
+    // Check if browser supports SubtleCrypto
+    if (window.crypto && window.crypto.subtle) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(input);
+        const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-            // Stored SHA-256 hash of "Dd^i,z8IZ6Z3\Q"
-            const correctHash = "67a8771653fcfa14ad7eea00acdbe3737c96af9a8cb44d418304d63c1085d74e";
+        // Stored SHA-256 hash of "Dd^i,z8IZ6Z3\Q"
+        const correctHash = "67a8771653fcfa14ad7eea00acdbe3737c96af9a8cb44d418304d63c1085d74e";
 
-            if (hashHex === correctHash) {
-                document.getElementById("success").classList.remove("hidden");
-                document.getElementById("fail").classList.add("hidden");
-                setTimeout(() => { window.location.href = "reward.html"; }, 2000);
-            } else {
-                document.getElementById("fail").classList.remove("hidden");
-                document.getElementById("success").classList.add("hidden");
-            }
+        if (hashHex === correctHash) {
+            document.getElementById("success").classList.remove("hidden");
+            document.getElementById("fail").classList.add("hidden");
+            setTimeout(() => { window.location.href = "reward.html"; }, 2000);
+        } else {
+            document.getElementById("fail").classList.remove("hidden");
+            document.getElementById("success").classList.add("hidden");
         }
+    } else {
+        console.error("Web Crypto API not supported in this browser.");
+        alert("Web Crypto API is not supported in your browser. Please use a modern browser.");
+    }
+}
     </script>
 </head>
 <body>
