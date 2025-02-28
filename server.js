@@ -1,7 +1,8 @@
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const fs = require('fs-extra');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -10,8 +11,13 @@ const PORT = 3000;
 const USERS_FOLDER = './users';
 const SECRET_KEY = 'your-secret-key';  // Use a strong secret key in production
 
+// Load SSL certificate and private key for HTTPS
+const privateKey = fs.readFileSync('certs/private.key.pem', 'utf8');
+const certificate = fs.readFileSync('certs/domain.cert.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
+
 app.use(bodyParser.json());
-app.use(express.static('docs'));  // Serve static files like HTML, CSS, and JS
+app.use(express.static('public'));  // Serve static files like HTML, CSS, and JS
 
 // Middleware to verify JWT token
 const authenticateJWT = (req, res, next) => {
@@ -76,7 +82,7 @@ app.get('/rewards', authenticateJWT, async (req, res) => {
     res.json({ rewards: userData.rewards });
 });
 
-// Start the server
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// Start the server with HTTPS
+https.createServer(credentials, app).listen(PORT, () => {
+    console.log(`Server running on https://localhost:${PORT}`);
 });
