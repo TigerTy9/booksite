@@ -70,36 +70,17 @@ app.get("/api/rewards/list", authenticateJWT, async (req, res) => {
     }
 });
 
-
-// Function to get user data from JSON
-async function getUserFromDB(userId) {
-    try {
-        const usersFile = path.join(__dirname, "users.json"); // Ensure correct path
-        const usersData = await fs.readFile(usersFile, "utf-8");
-        const users = JSON.parse(usersData);
-        
-        return users.find(user => user.id === userId) || null;
-    } catch (error) {
-        console.error("Error fetching user data:", error);
-        return null;
-    }
-}
-
-// API Route to Check Reward Access
 app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
     const { rewardId } = req.body;
-    const user = await getUserFromDB(req.user.id); // Fetch user data
+    const userFile = `users/${req.user.username}.json`;
 
-    if (!user) {
-        return res.status(404).json({ error: "User not found" });
-    }
-
-    if (!user.unlockedRewards.includes(rewardId)) {
+    if (!userFile.unlockedRewards.includes(rewardId)) {
         return res.status(403).json({ unlocked: false });
     }
 
     res.json({ unlocked: true });
 });
+
 
 app.get("/api/challenges/list", authenticateJWT, async (req, res) => {
     const userFile = `users/${req.user.username}.json`;
