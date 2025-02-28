@@ -30,19 +30,20 @@ let users = [];
 // Serve static files like your HTML
 app.use(express.static('docs'));
 
-// Login Route (updated to use Node.js crypto module)
+// Login Route
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
+
     const user = users.find(user => user.username === username);
     
     if (!user) {
         return res.send('User not found');
     }
 
-    // Hash the entered password and compare it to the stored hash
-    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+    // Compare hashed password
+    const match = await bcrypt.compare(password, user.password);
 
-    if (hashedPassword === user.password) {
+    if (match) {
         req.session.user = user;
         res.redirect('/reward.html');  // Redirect to rewards page after login
     } else {
