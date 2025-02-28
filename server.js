@@ -144,6 +144,39 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// Signup Route
+app.post('/signup', async (req, res) => {
+    const { username, password } = req.body;
+
+    // Check if user already exists (based on their username)
+    const userFilePath = path.join(__dirname, 'users', `${username}.html`);
+    
+    if (fs.existsSync(userFilePath)) {
+        return res.send('Username already exists! Please choose a different one.');
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Save user data to the users folder (using their username as the file name)
+    const userFileContent = `
+        <html>
+            <head><title>User Data</title></head>
+            <body>
+                <h1>${username} - Account Created!</h1>
+                <p>Your account has been successfully created.</p>
+                <p>Remember, your password is stored securely and cannot be retrieved.</p>
+            </body>
+        </html>
+    `;
+    
+    fs.writeFileSync(userFilePath, userFileContent);
+
+    // Redirect to login page after successful signup
+    res.redirect('/login.html');
+});
+
+
 // Start HTTPS server
 https.createServer(credentials, app).listen(PORT, () => {
     console.log(`Server running on https://localhost:${PORT}`);
