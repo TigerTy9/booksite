@@ -1,6 +1,8 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
+const crypto = require('crypto');
+
 const app = express();
 const PORT = 3000;
 
@@ -20,6 +22,26 @@ let users = [];
 // Serve static files like your HTML
 app.use(express.static('docs'));
 
+// Login Route (updated to use Node.js crypto module)
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const user = users.find(user => user.username === username);
+    
+    if (!user) {
+        return res.send('User not found');
+    }
+
+    // Hash the entered password and compare it to the stored hash
+    const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+
+    if (hashedPassword === user.password) {
+        req.session.user = user;
+        res.redirect('/reward.html');  // Redirect to rewards page after login
+    } else {
+        res.send('Incorrect password');
+    }
+});
+
 // Sign Up Route
 app.post('/signup', async (req, res) => {
     const { username, password } = req.body;
@@ -31,27 +53,6 @@ app.post('/signup', async (req, res) => {
     users.push({ username, password: hashedPassword });
 
     res.redirect('/login');
-});
-
-// Login Route
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    const user = users.find(user => user.username === username);
-    
-    if (!user) {
-        return res.send('User not found');
-    }
-
-    // Compare hashed password
-    const match = await bcrypt.compare(password, user.password);
-
-    if (match) {
-        req.session.user = user;
-        res.redirect('/reward.html');  // Redirect to rewards page after login
-    } else {
-        res.send('Incorrect password');
-    }
 });
 
 // Start server
