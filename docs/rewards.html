@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Rewards - Cyber Restricted</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 100px;
+        }
+        .reward {
+            background: #222;
+            border: 1px solid #0f0;
+            color: #0f0;
+            margin: 10px;
+            padding: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Your Rewards</h1>
+    <div id="rewardsContainer"></div>
+    <br>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        async function fetchRewards() {
+            const token = localStorage.getItem('jwt');
+            const response = await fetch('/rewards', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.rewards) {
+                const rewardsContainer = document.getElementById("rewardsContainer");
+                rewardsContainer.innerHTML = '';
+                data.rewards.forEach(reward => {
+                    const rewardElement = document.createElement('div');
+                    rewardElement.classList.add('reward');
+                    rewardElement.innerText = reward;
+                    rewardsContainer.appendChild(rewardElement);
+                });
+            } else {
+                window.location.href = 'login.html';  // Redirect to login if not logged in
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('jwt');
+            window.location.href = 'login.html';
+        }
+
+        fetchRewards();
+    </script>
+</body>
+</html>

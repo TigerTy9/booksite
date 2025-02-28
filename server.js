@@ -70,7 +70,7 @@ app.post('/login', async (req, res) => {
     res.json({ token });
 });
 
-// Rewards page - fetch rewards for the authenticated user
+// Backend route to fetch rewards
 app.get('/rewards', authenticateJWT, async (req, res) => {
     const userFilePath = path.join(USERS_FOLDER, `${req.user.username}.json`);
 
@@ -81,7 +81,7 @@ app.get('/rewards', authenticateJWT, async (req, res) => {
     const userData = await fs.readJson(userFilePath);
     res.json({ rewards: userData.rewards });
 });
-
+s
 // Start the server with HTTPS
 https.createServer(credentials, app).listen(PORT, () => {
     console.log(`Server running on https://localhost:${PORT}`);
