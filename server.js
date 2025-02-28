@@ -74,11 +74,17 @@ app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
     const { rewardId } = req.body;
     const userFile = `users/${req.user.username}.json`;
 
-    if (!userFile.unlockedRewards.includes(rewardId)) {
-        return res.status(403).json({ unlocked: false });
-    }
+    try {
+        const userData = await fs.readJson(userFile); // Read user data
+        if (!userData.unlockedRewards || !userData.unlockedRewards.includes(rewardId)) {
+            return res.status(403).json({ unlocked: false });
+        }
 
-    res.json({ unlocked: true });
+        res.json({ unlocked: true });
+    } catch (error) {
+        console.error("Error checking reward:", error);
+        res.status(500).json({ message: "Error checking reward access" });
+    }
 });
 
 
