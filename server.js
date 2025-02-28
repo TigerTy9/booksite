@@ -53,10 +53,27 @@ app.post('/login', async (req, res) => {
     }
 });
 
+const fs = require('fs');
+const path = require('path');
+
+// Helper function to get the user file path
+const getUserFilePath = (username) => path.join(__dirname, 'users', `${username}.json`);
+
+// Ensure the 'users' directory exists
+const ensureUsersDirectory = () => {
+    const usersDir = path.join(__dirname, 'users');
+    if (!fs.existsSync(usersDir)) {
+        fs.mkdirSync(usersDir, { recursive: true });
+    }
+};
+
 // Sign Up Route
 app.post('/signup', async (req, res) => {
     const { username, password } = req.body;
-    
+
+    // Ensure the users directory exists
+    ensureUsersDirectory();
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -67,10 +84,12 @@ app.post('/signup', async (req, res) => {
     };
 
     // Save the user to a JSON file
-    fs.writeFileSync(getUserFilePath(username), JSON.stringify(user));
+    const userFilePath = getUserFilePath(username);
+    fs.writeFileSync(userFilePath, JSON.stringify(user));
 
     res.redirect('/login.html');
 });
+
 
 // Challenge Route - Users can submit answers to challenges
 app.post('/submit-challenge', (req, res) => {
