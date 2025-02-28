@@ -1,7 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
-const crypto = require('crypto');
 const https = require('https');
 const fs = require('fs');
 
@@ -45,7 +44,7 @@ app.post('/login', async (req, res) => {
 
     if (match) {
         req.session.user = user;
-        res.redirect('/reward.html');  // Redirect to rewards page after login
+        res.redirect('/reward');  // Redirect to rewards page after login
     } else {
         res.send('Incorrect password');
     }
@@ -62,6 +61,42 @@ app.post('/signup', async (req, res) => {
     users.push({ username, password: hashedPassword });
 
     res.redirect('/login.html');
+});
+
+// Reward Route
+app.get('/reward', (req, res) => {
+    if (!req.session.user) {
+        return res.redirect('/login.html');  // Redirect to login if not logged in
+    }
+
+    // Inject user data into the reward page (e.g., username)
+    const username = req.session.user.username;
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Reward Page</title>
+        </head>
+        <body>
+            <h1>Congratulations, ${username}!</h1>
+            <p>You have successfully logged in and unlocked your reward!</p>
+            <p>Thank you for participating in the challenge.</p>
+            <a href="/logout">Logout</a>
+        </body>
+        </html>
+    `);
+});
+
+// Logout Route
+app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.send('Error logging out');
+        }
+        res.redirect('/login.html');
+    });
 });
 
 // Start HTTPS server
