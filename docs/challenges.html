@@ -4,15 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Challenges</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .challenges {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .challenge {
+            padding: 10px;
+            margin: 15px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .challenge:last-child {
+            border-bottom: none;
+        }
+        .completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .not-completed {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 14px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .special-content-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Challenges</h1>
-    <p>Challenge 1: Solve this problem.</p>
-    <form action="/submit-challenge" method="POST">
-        <input type="hidden" name="username" value="username">
-        <input type="text" name="challengeId" value="challenge1" hidden>
-        <input type="text" name="answer" placeholder="Enter your answer">
-        <button type="submit">Submit</button>
-    </form>
+
+    <h1>Your Challenges</h1>
+
+    <div class="challenges">
+        <div class="challenge">
+            <h3>Chapter 1: Introduction to Coding</h3>
+            <p>Status: Not completed</p>
+            <form action="/submit-challenge" method="POST">
+                <input type="text" name="answer" placeholder="Enter your answer">
+                <input type="hidden" name="username" value="username"> <!-- Replace with dynamic username -->
+                <input type="hidden" name="challengeId" value="chapter1">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="challenge">
+            <h3>Chapter 2: Basic Algorithms</h3>
+            <p>Status: Not completed</p>
+            <form action="/submit-challenge" method="POST">
+                <input type="text" name="answer" placeholder="Enter your answer">
+                <input type="hidden" name="username" value="username"> <!-- Replace with dynamic username -->
+                <input type="hidden" name="challengeId" value="chapter2">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="challenge">
+            <h3>Chapter 6: Unlock Special Content</h3>
+            <p>Status: Not completed</p>
+            <form action="/submit-challenge" method="POST">
+                <input type="text" name="answer" placeholder="Enter code to unlock special content">
+                <input type="hidden" name="username" value="username"> <!-- Replace with dynamic username -->
+                <input type="hidden" name="challengeId" value="chapter6">
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <a href="/special-content" class="special-content-link">Go to Special Content (Chapter 6)</a>
+
 </body>
 </html>

@@ -95,51 +95,56 @@ app.post('/signup', async (req, res) => {
 
 // Challenge Route - Users can submit answers to challenges
 app.post('/submit-challenge', (req, res) => {
-    const { challengeId, answer } = req.body;
-
-    // Ensure users directory exists
-    ensureUsersDirectory();
-
-    // Retrieve the user based on the token
-    const token = req.session.token;
-
-    if (!token) {
-        return res.send('Not logged in');
+    const { username, challengeId, answer } = req.body;
+    
+    const userFilePath = getUserFilePath(username);
+    
+    if (!fs.existsSync(userFilePath)) {
+        return res.send('User not found');
     }
 
-    // Find the user with the matching token
-    const usersDir = path.join(__dirname, 'users');
-    const userFiles = fs.readdirSync(usersDir);
-    let user = null;
+    const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
 
-    for (const file of userFiles) {
-        const userFilePath = path.join(usersDir, file);
-        const data = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
-
-        if (data.token === token) {
-            user = data;
-            break;
-        }
-    }
-
-    if (!user) {
-        return res.send('User not found or token expired');
-    }
-
-    // Simulate checking the challenge answer (replace with actual logic)
-    console.log(`Checking answer for challenge ${challengeId} submitted by ${user.username}`);
-    if (answer === 'correct-answer') {
-        // Mark the challenge as completed
+    // Check if the answer is correct for each challenge
+    if (challengeId === 'chapter6' && answer === 'TomFurbos') {
+        // Unlock special content for Chapter 6
+        user.specialAccess = true;
+        user.challengesCompleted.push(challengeId); // Mark Chapter 6 as completed
+        fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2));
+        res.redirect('/special-content.html');  // Redirect to special content page
+    } else if (answer === 'correct-answer') {
+        // General challenge check for others
         user.challengesCompleted.push(challengeId);
-        fs.writeFileSync(getUserFilePath(user.username), JSON.stringify(user, null, 2)); // Pretty print with indentation
-
-        console.log(`Challenge ${challengeId} completed by ${user.username}`);
-        res.redirect('/rewards.html');  // Redirect to rewards page after completing a challenge
+        fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2));
+        res.redirect('/challenges.html');  // Redirect back to challenges page
     } else {
-        console.log('Incorrect answer for challenge:', challengeId);
         res.send('Incorrect answer, please try again.');
     }
 });
+
+// Special Content Page - Available to users who solved Chapter 6
+app.get('/special-content', (req, res) => {
+    if (!req.session.user || !req.session.user.specialAccess) {
+        return res.send('Access denied. Solve Chapter 6 to unlock this content.');
+    }
+
+    res.send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Special Content</title>
+        </head>
+        <body>
+            <h1>Special Content Unlocked!</h1>
+            <p>Congratulations! You've unlocked access to special content for solving Chapter 6.</p>
+            <a href="/challenges.html">Back to Challenges</a>
+        </body>
+        </html>
+    `);
+});
+
 
 // Rewards Page - Display unlocked rewards
 app.get('/rewards', (req, res) => {
