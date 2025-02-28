@@ -2,9 +2,18 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const crypto = require('crypto');
+const https = require('https');
+const fs = require('fs');
 
 const app = express();
 const PORT = 3000;
+
+// SSL certificate and key (update these paths with your actual file locations)
+const privateKey = fs.readFileSync('certs/private.key.pem', 'utf8');
+const certificate = fs.readFileSync('certs/domain.cert.pem', 'utf8');
+const ca = fs.readFileSync('path/to/ca.pem', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate, ca: ca };
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -55,7 +64,7 @@ app.post('/signup', async (req, res) => {
     res.redirect('/login');
 });
 
-// Start server
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+// Start HTTPS server
+https.createServer(credentials, app).listen(PORT, () => {
+    console.log(`Server running on https://localhost:${PORT}`);
 });
