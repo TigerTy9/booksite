@@ -83,6 +83,17 @@ app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
     }
 });
 
+app.get("/api/challenges/list", authenticateJWT, async (req, res) => {
+    const userFile = `users/${req.user.username}.json`;
+
+    try {
+        const userData = await fs.readJson(userFile);
+        res.json({ completedChallenges: userData.completedChallenges || [] });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching challenges" });
+    }
+});
+
 // Register a new user
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
