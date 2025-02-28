@@ -54,9 +54,6 @@ app.post('/login', async (req, res) => {
 });
 
 
-// Helper function to get the user file path
-const getUserFilePath = (username) => path.join(__dirname, 'users', `${username}.json`);
-
 // Ensure the 'users' directory exists
 const ensureUsersDirectory = () => {
     const usersDir = path.join(__dirname, 'users');
