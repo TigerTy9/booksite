@@ -37,12 +37,12 @@ const authenticateJWT = (req, res, next) => {
 };
 
 // Verify login session
-app.get("/api/auth/verify", authenticate, (req, res) => {
+app.get("/api/auth/verify", authenticateJWT, (req, res) => {
     res.json({ message: "Authenticated" });
 });
 
 // Mark challenge as completed
-app.post("/api/challenges/complete", authenticate, async (req, res) => {
+app.post("/api/challenges/complete", authenticateJWT, async (req, res) => {
     const { chapter } = req.body;
     const userFile = `users/${req.user.username}.json`;
 
