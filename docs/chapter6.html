@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Restricted - Chapter 6 Challenge</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 100px;
+        }
+        input {
+            background: black;
+            border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            text-align: center;
+        }
+        button {
+            background: #0f0;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #080;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        async function checkLogin() {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+            
+            try {
+                const response = await fetch("/api/auth/verify", {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (!response.ok) {
+                    localStorage.removeItem("jwt");
+                    window.location.href = "login.html";
+                }
+            } catch (error) {
+                console.error("Error verifying session:", error);
+                localStorage.removeItem("jwt");
+                window.location.href = "login.html";
+            }
+        }
+
+        async function checkPassword() {
+            const input = document.getElementById("password").value;
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Stored SHA-256 hash of the correct answer
+            const correctHash = "67a8771653fcfa14ad7eea00acdbe3737c96af9a8cb44d418304d63c1085d74e";
+
+            if (hashHex === correctHash) {
+                document.getElementById("success").classList.remove("hidden");
+                document.getElementById("fail").classList.add("hidden");
+                
+                // Mark challenge as completed
+                const token = localStorage.getItem("jwt");
+                await fetch("/api/challenges/complete", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ chapter: 6 })
+                });
+
+                setTimeout(() => { window.location.href = "reward.html"; }, 2000);
+            } else {
+                document.getElementById("fail").classList.remove("hidden");
+                document.getElementById("success").classList.add("hidden");
+            }
+        }
+
+        window.onload = checkLogin;
+    </script>
+</head>
+<body>
+    <h1>🔐 Chapter 6 Decryption Challenge</h1>
+    <p>Enter the decrypted code from the book:</p>
+    <input type="text" id="password" placeholder="Enter the code...">
+    <br>
+    <button onclick="checkPassword()">Submit</button>
+
+    <p id="success" class="hidden">✅ Correct! Redirecting...</p>
+    <p id="fail" class="hidden">❌ Incorrect. Try again.</p>
+</body>
+</html>

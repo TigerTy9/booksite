@@ -36,6 +36,30 @@ const authenticateJWT = (req, res, next) => {
     });
 };
 
+// Verify login session
+app.get("/api/auth/verify", authenticate, (req, res) => {
+    res.json({ message: "Authenticated" });
+});
+
+// Mark challenge as completed
+app.post("/api/challenges/complete", authenticate, async (req, res) => {
+    const { chapter } = req.body;
+    const userFile = `users/${req.user.username}.json`;
+
+    try {
+        const userData = await fs.readJson(userFile);
+        userData.completedChallenges = userData.completedChallenges || [];
+        if (!userData.completedChallenges.includes(chapter)) {
+            userData.completedChallenges.push(chapter);
+            await fs.writeJson(userFile, userData, { spaces: 2 });
+        }
+        res.json({ message: "Challenge completed" });
+    } catch (error) {
+        res.status(500).json({ message: "Error saving progress" });
+    }
+});
+
+
 // Register a new user
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
