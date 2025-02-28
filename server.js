@@ -89,23 +89,30 @@ app.post('/signup', async (req, res) => {
 // Challenge Route - Users can submit answers to challenges
 app.post('/submit-challenge', (req, res) => {
     const { username, challengeId, answer } = req.body;
-
+    
+    // Ensure users directory exists
+    ensureUsersDirectory();
+    
     const userFilePath = getUserFilePath(username);
-
+    
     if (!fs.existsSync(userFilePath)) {
+        console.log('User not found:', username);
         return res.send('User not found');
     }
 
     const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
 
     // Simulate checking the challenge answer (replace with actual logic)
+    console.log(`Checking answer for challenge ${challengeId} submitted by ${username}`);
     if (answer === 'correct-answer') {
         // Mark the challenge as completed
         user.challengesCompleted.push(challengeId);
-        fs.writeFileSync(userFilePath, JSON.stringify(user));
+        fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2)); // Pretty print with indentation
 
+        console.log(`Challenge ${challengeId} completed by ${username}`);
         res.redirect('/rewards.html');  // Redirect to rewards page after completing a challenge
     } else {
+        console.log('Incorrect answer for challenge:', challengeId);
         res.send('Incorrect answer, please try again.');
     }
 });
