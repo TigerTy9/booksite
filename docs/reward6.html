@@ -16,8 +16,6 @@
     </style>
     <script>
         async function checkAccess() {
-            document.body.style.display = "none"; // Ensure page is hidden on load
-
             const token = localStorage.getItem("jwt");
             if (!token) {
                 window.location.href = "login.html";
@@ -38,7 +36,7 @@
                 if (!data.unlocked) {
                     window.location.href = "catalogue.html";
                 } else {
-                    document.body.style.display = "block"; // Only show page if unlocked
+                    document.body.style.display = "block"; // Show the reward page if unlocked
                 }
             } catch (error) {
                 console.error("Error verifying reward:", error);
