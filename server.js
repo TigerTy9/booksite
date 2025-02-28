@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const https = require('https');
 
 const app = express();
@@ -30,6 +31,9 @@ app.use(express.static('docs'));
 // Helper function to get the user file path
 const getUserFilePath = (username) => path.join(__dirname, 'users', `${username}.json`);
 
+// Helper function to generate a unique token
+const generateToken = () => crypto.randomBytes(16).toString('hex');
+
 // Login Route
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -46,13 +50,17 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(password, user.password);
 
     if (match) {
-        req.session.user = user;
+        const token = generateToken();
+        req.session.token = token;
+        // Store the token in the user's file for future reference (you can also store it in a more secure place, like a DB)
+        user.token = token;
+        fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2));
+
         res.redirect('/challenges.html');  // Redirect to challenges page after login
     } else {
         res.send('Incorrect password');
     }
 });
-
 
 // Ensure the 'users' directory exists
 const ensureUsersDirectory = () => {
@@ -85,31 +93,47 @@ app.post('/signup', async (req, res) => {
     res.redirect('/login.html');
 });
 
-
 // Challenge Route - Users can submit answers to challenges
 app.post('/submit-challenge', (req, res) => {
-    const { username, challengeId, answer } = req.body;
-    
+    const { challengeId, answer } = req.body;
+
     // Ensure users directory exists
     ensureUsersDirectory();
-    
-    const userFilePath = getUserFilePath(username);
-    
-    if (!fs.existsSync(userFilePath)) {
-        console.log('User not found:', username);
-        return res.send('User not found');
+
+    // Retrieve the user based on the token
+    const token = req.session.token;
+
+    if (!token) {
+        return res.send('Not logged in');
     }
 
-    const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
+    // Find the user with the matching token
+    const usersDir = path.join(__dirname, 'users');
+    const userFiles = fs.readdirSync(usersDir);
+    let user = null;
+
+    for (const file of userFiles) {
+        const userFilePath = path.join(usersDir, file);
+        const data = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
+
+        if (data.token === token) {
+            user = data;
+            break;
+        }
+    }
+
+    if (!user) {
+        return res.send('User not found or token expired');
+    }
 
     // Simulate checking the challenge answer (replace with actual logic)
-    console.log(`Checking answer for challenge ${challengeId} submitted by ${username}`);
+    console.log(`Checking answer for challenge ${challengeId} submitted by ${user.username}`);
     if (answer === 'correct-answer') {
         // Mark the challenge as completed
         user.challengesCompleted.push(challengeId);
-        fs.writeFileSync(userFilePath, JSON.stringify(user, null, 2)); // Pretty print with indentation
+        fs.writeFileSync(getUserFilePath(user.username), JSON.stringify(user, null, 2)); // Pretty print with indentation
 
-        console.log(`Challenge ${challengeId} completed by ${username}`);
+        console.log(`Challenge ${challengeId} completed by ${user.username}`);
         res.redirect('/rewards.html');  // Redirect to rewards page after completing a challenge
     } else {
         console.log('Incorrect answer for challenge:', challengeId);
@@ -117,69 +141,32 @@ app.post('/submit-challenge', (req, res) => {
     }
 });
 
-// Challenges Page - Display all available challenges to the user
-app.get('/challenges', (req, res) => {
-    if (!req.session.user) {
-        return res.redirect('/login.html');  // Redirect to login if not logged in
-    }
-
-    // Simulate challenge data (replace with your real challenges)
-    const challenges = [
-        { id: 'challenge1', description: 'Solve this problem to unlock reward 1.' },
-        { id: 'challenge2', description: 'Solve this problem to unlock reward 2.' },
-        { id: 'challenge3', description: 'Solve this problem to unlock reward 3.' }
-    ];
-
-    const username = req.session.user.username;
-    const userFilePath = getUserFilePath(username);
-
-    if (!fs.existsSync(userFilePath)) {
-        return res.send('User data not found');
-    }
-
-    const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
-
-    // Render challenge page with available challenges and completed challenges
-    let challengesHTML = challenges.map(challenge => {
-        const completed = user.challengesCompleted.includes(challenge.id) ? 'Completed' : 'Not completed';
-        return `<li>${challenge.description} - Status: ${completed}</li>`;
-    }).join('');
-
-    res.send(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Challenges</title>
-        </head>
-        <body>
-            <h1>Welcome, ${username}</h1>
-            <h2>Your Challenges:</h2>
-            <ul>
-                ${challengesHTML}
-            </ul>
-            <a href="/rewards.html">View Rewards</a><br>
-            <a href="/logout">Logout</a>
-        </body>
-        </html>
-    `);
-});
-
 // Rewards Page - Display unlocked rewards
 app.get('/rewards', (req, res) => {
-    if (!req.session.user) {
+    if (!req.session.token) {
         return res.redirect('/login.html');  // Redirect to login if not logged in
     }
 
-    const username = req.session.user.username;
-    const userFilePath = getUserFilePath(username);
+    const token = req.session.token;
 
-    if (!fs.existsSync(userFilePath)) {
-        return res.send('User data not found');
+    // Retrieve the user based on the token
+    const usersDir = path.join(__dirname, 'users');
+    const userFiles = fs.readdirSync(usersDir);
+    let user = null;
+
+    for (const file of userFiles) {
+        const userFilePath = path.join(usersDir, file);
+        const data = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
+
+        if (data.token === token) {
+            user = data;
+            break;
+        }
     }
 
-    const user = JSON.parse(fs.readFileSync(userFilePath, 'utf8'));
+    if (!user) {
+        return res.send('User not found or token expired');
+    }
 
     // Simulate rewards based on completed challenges (replace with actual logic)
     const rewards = [
@@ -205,7 +192,7 @@ app.get('/rewards', (req, res) => {
             <title>Your Rewards</title>
         </head>
         <body>
-            <h1>Congratulations, ${username}!</h1>
+            <h1>Congratulations, ${user.username}!</h1>
             <h2>Your Unlocked Rewards:</h2>
             <ul>
                 ${rewardsHTML}
