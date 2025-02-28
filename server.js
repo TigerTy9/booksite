@@ -72,16 +72,15 @@ app.get("/api/rewards/list", authenticateJWT, async (req, res) => {
 
 app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
     const { rewardId } = req.body;
-    const userFile = `users/${req.user.username}.json`;
+    const user = getUserFromDB(req.user.id); // Fetch user's unlocked rewards
 
-    try {
-        const userData = await fs.readJson(userFile);
-        const isUnlocked = userData.completedChallenges?.includes(rewardId);
-        res.json({ unlocked: !!isUnlocked });
-    } catch (error) {
-        res.status(500).json({ message: "Error verifying reward access" });
+    if (!user.unlockedRewards.includes(rewardId)) {
+        return res.status(403).json({ unlocked: false });
     }
+
+    res.json({ unlocked: true });
 });
+
 
 app.get("/api/challenges/list", authenticateJWT, async (req, res) => {
     const userFile = `users/${req.user.username}.json`;

@@ -75,7 +75,21 @@
 
                 div.innerHTML = `<h3>${challenge.name}</h3>`;
                // div.onclick = () => showDetails(challenge);
-               div.onclick = () => window.location.href = `challenge.html?id=${challenge.id}`;
+               div.onclick = () => {
+                const chapterPages = {
+                    1: "chapter1.html",
+                    2: "chapter2.html",
+                    3: "chapter3.html",
+                    6: "chapter6.html"
+                };
+
+                if (chapterPages[challenge.id]) {
+                    window.location.href = chapterPages[challenge.id] + `?id=${challenge.id}`;
+                } else {
+                    alert("Invalid challenge!");
+                }
+            };
+
 
                 container.appendChild(div);
             });

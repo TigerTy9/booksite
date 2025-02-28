@@ -11,10 +11,13 @@
             font-family: 'Courier New', monospace;
             text-align: center;
             padding-top: 50px;
+            display: none; /* Page is hidden by default */
         }
     </style>
     <script>
         async function checkAccess() {
+            document.body.style.display = "none"; // Ensure page is hidden on load
+
             const token = localStorage.getItem("jwt");
             if (!token) {
                 window.location.href = "login.html";
@@ -34,6 +37,8 @@
                 const data = await response.json();
                 if (!data.unlocked) {
                     window.location.href = "catalogue.html";
+                } else {
+                    document.body.style.display = "block"; // Only show page if unlocked
                 }
             } catch (error) {
                 console.error("Error verifying reward:", error);
