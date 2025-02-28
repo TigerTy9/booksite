@@ -59,7 +59,7 @@ app.post("/api/challenges/complete", authenticateJWT, async (req, res) => {
     }
 });
 
-app.get("/api/rewards/list", authenticateJWT, async (req, res) => {
+app.get("/api/rewards/list", authenticate, async (req, res) => {
     const userFile = `users/${req.user.username}.json`;
 
     try {
@@ -70,35 +70,16 @@ app.get("/api/rewards/list", authenticateJWT, async (req, res) => {
     }
 });
 
-app.post("/api/rewards/check", authenticateJWT, async (req, res) => {
+app.post("/api/rewards/check", authenticate, async (req, res) => {
     const { rewardId } = req.body;
     const userFile = `users/${req.user.username}.json`;
 
     try {
         const userData = await fs.readJson(userFile);
-
-        console.log("User rewards:", userData.unlockedRewards); // Debugging log
-        if (!userData.unlockedRewards || !userData.unlockedRewards.includes(rewardId)) {
-            return res.status(403).json({ unlocked: false });
-        }
-
-        res.json({ unlocked: true });
+        const isUnlocked = userData.completedChallenges?.includes(rewardId);
+        res.json({ unlocked: !!isUnlocked });
     } catch (error) {
-        console.error("Error fetching user data:", error);
-        res.status(500).json({ message: "Error fetching rewards data" });
-    }
-});
-
-
-
-app.get("/api/challenges/list", authenticateJWT, async (req, res) => {
-    const userFile = `users/${req.user.username}.json`;
-
-    try {
-        const userData = await fs.readJson(userFile);
-        res.json({ completedChallenges: userData.completedChallenges || [] });
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching challenges" });
+        res.status(500).json({ message: "Error verifying reward access" });
     }
 });
 
