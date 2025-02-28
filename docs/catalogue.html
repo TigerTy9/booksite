@@ -3,67 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenges Catalogue - Cyber Restricted</title>
+    <title>Reward Catalogue</title>
     <style>
         body {
             background-color: #000;
             color: #0f0;
             font-family: 'Courier New', monospace;
             text-align: center;
-            padding-top: 100px;
+            padding-top: 50px;
         }
-        .challenge {
-            background: #222;
+        .reward {
             border: 1px solid #0f0;
-            color: #0f0;
+            padding: 20px;
             margin: 10px;
-            padding: 10px;
             display: inline-block;
+            width: 200px;
         }
         .locked {
-            background-color: #444;
+            opacity: 0.3;
+        }
+        .hidden {
+            display: none;
         }
     </style>
-</head>
-<body>
-    <h1>🔐 Challenge Catalogue</h1>
-    <div id="catalogueContainer"></div>
-
     <script>
-        async function fetchCatalogue() {
-            const token = localStorage.getItem('jwt');
-            const response = await fetch('/rewards', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            });
+        async function loadRewards() {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
 
-            const data = await response.json();
-            const unlockedRewards = data.rewards || [];
+            try {
+                const response = await fetch("/api/rewards/list", {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + token }
+                });
 
-            const catalogue = [
-                { name: 'Chapter 1: Basic Challenge', code: 'CH1', reward: 'Unlocked Reward 1' },
-                { name: 'Chapter 2: Intermediate Challenge', code: 'CH2', reward: 'Locked' },
-                { name: 'Chapter 3: Advanced Challenge', code: 'CH3', reward: 'Locked' },
-                // Add all challenges here
+                if (!response.ok) {
+                    localStorage.removeItem("jwt");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const data = await response.json();
+                displayRewards(data.unlockedRewards);
+            } catch (error) {
+                console.error("Error loading rewards:", error);
+                localStorage.removeItem("jwt");
+                window.location.href = "login.html";
+            }
+        }
+
+        function displayRewards(unlockedRewards) {
+            const rewards = [
+                { id: 6, name: "Secret Chapter 6 Bonus", url: "reward6.html" },
+                { id: 7, name: "Hidden Lore File", url: "reward7.html" }
             ];
 
-            const catalogueContainer = document.getElementById("catalogueContainer");
-            catalogue.forEach(challenge => {
-                const challengeElement = document.createElement('div');
-                challengeElement.classList.add('challenge');
-                if (unlockedRewards.includes(challenge.code)) {
-                    challengeElement.innerText = `${challenge.name} - ${challenge.reward}`;
-                } else {
-                    challengeElement.classList.add('locked');
-                    challengeElement.innerText = `${challenge.name} - Locked`;
+            const container = document.getElementById("rewards-container");
+
+            rewards.forEach(reward => {
+                const div = document.createElement("div");
+                div.className = "reward";
+                if (!unlockedRewards.includes(reward.id)) {
+                    div.classList.add("locked");
                 }
-                catalogueContainer.appendChild(challengeElement);
+
+                div.innerHTML = `<h3>${reward.name}</h3>`;
+                
+                if (unlockedRewards.includes(reward.id)) {
+                    div.innerHTML += `<a href="${reward.url}">Access</a>`;
+                } else {
+                    div.innerHTML += `<p>Locked</p>`;
+                }
+
+                container.appendChild(div);
             });
         }
 
-        fetchCatalogue();
+        window.onload = loadRewards;
     </script>
+</head>
+<body>
+    <h1>🎁 Reward Catalogue</h1>
+    <div id="rewards-container"></div>
 </body>
 </html>

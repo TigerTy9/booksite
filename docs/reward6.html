@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Reward</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 50px;
+        }
+    </style>
+    <script>
+        async function checkAccess() {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/rewards/check", {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ rewardId: 6 })
+                });
+
+                const data = await response.json();
+                if (!data.unlocked) {
+                    window.location.href = "catalogue.html";
+                }
+            } catch (error) {
+                console.error("Error verifying reward:", error);
+                window.location.href = "catalogue.html";
+            }
+        }
+
+        window.onload = checkAccess;
+    </script>
+</head>
+<body>
+    <h1>🎉 Congratulations!</h1>
+    <p>You've unlocked this special reward!</p>
+</body>
+</html>

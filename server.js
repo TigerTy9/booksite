@@ -59,6 +59,29 @@ app.post("/api/challenges/complete", authenticateJWT, async (req, res) => {
     }
 });
 
+app.get("/api/rewards/list", authenticate, async (req, res) => {
+    const userFile = `users/${req.user.username}.json`;
+
+    try {
+        const userData = await fs.readJson(userFile);
+        res.json({ unlockedRewards: userData.completedChallenges || [] });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching rewards" });
+    }
+});
+
+app.post("/api/rewards/check", authenticate, async (req, res) => {
+    const { rewardId } = req.body;
+    const userFile = `users/${req.user.username}.json`;
+
+    try {
+        const userData = await fs.readJson(userFile);
+        const isUnlocked = userData.completedChallenges?.includes(rewardId);
+        res.json({ unlocked: !!isUnlocked });
+    } catch (error) {
+        res.status(500).json({ message: "Error verifying reward access" });
+    }
+});
 
 // Register a new user
 app.post('/register', async (req, res) => {
