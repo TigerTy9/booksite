@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge Attempt</title>
+    <title>Challenge Debug</title>
     <style>
         body {
             background-color: #000;
@@ -12,25 +12,23 @@
             text-align: center;
             padding-top: 50px;
         }
-        .hidden { display: none; }
-        button {
-            padding: 10px;
-            background-color: #0f0;
-            border: none;
+        .challenge {
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
             cursor: pointer;
-            font-size: 16px;
+        }
+        .completed {
+            background-color: #0f03;
+        }
+        .hidden {
+            display: none;
         }
     </style>
     <script>
-        async function loadChallenge() {
-            const params = new URLSearchParams(window.location.search);
-            const challengeId = params.get("id");
-
-            if (!challengeId) {
-                document.getElementById("error").textContent = "Invalid challenge!";
-                return;
-            }
-
+        async function loadChallenges() {
             const token = localStorage.getItem("jwt");
             if (!token) {
                 window.location.href = "login.html";
@@ -38,39 +36,72 @@
             }
 
             try {
-                const response = await fetch("/api/challenges/get?id=" + challengeId, {
+                const response = await fetch("/api/challenges/list", {
                     method: "GET",
                     headers: { "Authorization": "Bearer " + token }
                 });
 
                 if (!response.ok) {
-                    document.getElementById("error").textContent = "Failed to load challenge.";
+                    localStorage.removeItem("jwt");
+                    window.location.href = "login.html";
                     return;
                 }
 
                 const data = await response.json();
-                document.getElementById("challenge-title").textContent = data.name;
-                document.getElementById("challenge-description").textContent = data.description;
-                document.getElementById("challenge-content").classList.remove("hidden");
+                displayChallenges(data.completedChallenges);
             } catch (error) {
-                document.getElementById("error").textContent = "Error loading challenge.";
+                console.error("Error loading challenges:", error);
+                localStorage.removeItem("jwt");
+                window.location.href = "login.html";
             }
         }
 
-        function submitAnswer() {
-            alert("Answer submitted! (Implement validation later)");
+        function displayChallenges(completedChallenges) {
+            const challenges = [
+                { id: 1, name: "Chapter 1 Quiz", description: "Complete the quiz for Chapter 1." },
+                { id: 2, name: "Chapter 2 Puzzle", description: "Solve the logic puzzle for Chapter 2." },
+                { id: 3, name: "Hidden Task", description: "Find the secret answer." },
+                { id: 6, name: "Chapter 6 Challenge", description: "Answer the final test in Chapter 6." }
+            ];
+
+            const container = document.getElementById("challenges-container");
+
+            challenges.forEach(challenge => {
+                const div = document.createElement("div");
+                div.className = "challenge";
+                if (completedChallenges.includes(challenge.id)) {
+                    div.classList.add("completed");
+                }
+
+                div.innerHTML = `<h3>${challenge.name}</h3>`;
+               // div.onclick = () => showDetails(challenge);
+               div.onclick = () => window.location.href = `challenge.html?id=${challenge.id}`;
+
+                container.appendChild(div);
+            });
         }
 
-        window.onload = loadChallenge;
+        function showDetails(challenge) {
+            document.getElementById("challenge-title").textContent = challenge.name;
+            document.getElementById("challenge-description").textContent = challenge.description;
+            document.getElementById("details").classList.remove("hidden");
+        }
+
+        function closeDetails() {
+            document.getElementById("details").classList.add("hidden");
+        }
+
+        window.onload = loadChallenges;
     </script>
 </head>
 <body>
-    <h1 id="challenge-title"></h1>
-    <p id="challenge-description"></p>
-    <div id="error" style="color: red;"></div>
-    <div id="challenge-content" class="hidden">
-        <input type="text" id="answer" placeholder="Enter your answer">
-        <button onclick="submitAnswer()">Submit</button>
+    <h1>🛠 Challenge Debugging</h1>
+    <div id="challenges-container"></div>
+
+    <div id="details" class="hidden">
+        <h2 id="challenge-title"></h2>
+        <p id="challenge-description"></p>
+        <button onclick="closeDetails()">Close</button>
     </div>
 </body>
 </html>
