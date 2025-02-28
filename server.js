@@ -1,88 +1,60 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const session = require('express-session');
 const bcrypt = require('bcryptjs');
-const bodyParser = require('body-parser');
+const session = require('express-session');
 const app = express();
-const port = 3000;
+const PORT = 3000;
 
-// Database connection
-mongoose.connect('mongodb://localhost:27017/cyberRestricted', { useNewUrlParser: true, useUnifiedTopology: true });
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-// User schema and model
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true }
-});
-
-const User = mongoose.model('User', userSchema);
-
-// Middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('docs'));
+// Setup session handling
 app.use(session({
-    secret: 'cyberSecretKey',
+    secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true
 }));
 
-// Routes
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+// Temporary in-memory storage for users
+let users = [];
 
-// User registration page
-app.get('/register', (req, res) => {
-    res.sendFile(__dirname + '/register.html');
-});
+// Serve static files like your HTML
+app.use(express.static('docs'));
 
-// User login page
-app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/login.html');
-});
-
-// Handle user registration
-app.post('/register', async (req, res) => {
+// Sign Up Route
+app.post('/signup', async (req, res) => {
     const { username, password } = req.body;
+    
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, password: hashedPassword });
 
-    try {
-        await newUser.save();
-        res.redirect('/login');
-    } catch (err) {
-        res.send('Error: ' + err.message);
-    }
+    // Save the user
+    users.push({ username, password: hashedPassword });
+
+    res.redirect('/login');
 });
 
-// Handle user login
+// Login Route
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
-    const user = await User.findOne({ username });
 
-    if (user && await bcrypt.compare(password, user.password)) {
-        req.session.userId = user._id;
-        res.redirect('/dashboard');
+    const user = users.find(user => user.username === username);
+    
+    if (!user) {
+        return res.send('User not found');
+    }
+
+    // Compare hashed password
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+        req.session.user = user;
+        res.redirect('/reward.html');  // Redirect to rewards page after login
     } else {
-        res.send('Invalid credentials');
+        res.send('Incorrect password');
     }
 });
 
-// Dashboard page
-app.get('/dashboard', (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
-    res.send('<h1>Welcome to your Dashboard! You have unlocked exclusive content!</h1>');
-});
-
-// Logout
-app.get('/logout', (req, res) => {
-    req.session.destroy(() => {
-        res.redirect('/');
-    });
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });

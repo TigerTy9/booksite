@@ -1,9 +1,10 @@
+<!-- signup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyber Restricted - Secret File</title>
+    <title>Create Account</title>
     <style>
         body {
             background-color: #000;
@@ -12,37 +13,31 @@
             text-align: center;
             padding: 20px;
         }
-        h1 {
-            font-size: 26px;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 16px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        .pdf-container {
-            margin-top: 20px;
-            width: 90%;
-            max-width: 800px;
-            height: 600px;
+        input, button {
+            background: black;
             border: 1px solid #0f0;
+            color: #0f0;
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+            text-align: center;
         }
-        a {
-            color: #0ff;
-            text-decoration: none;
+        button {
+            background: #0f0;
+            color: black;
+            cursor: pointer;
         }
-        a:hover {
-            text-decoration: underline;
+        button:hover {
+            background: #080;
         }
     </style>
 </head>
 <body>
-    <h1>🕵️‍♂️ Secret Backstory Unlocked!</h1>
-    <p><em>Only a few have decrypted the code... Welcome to the hidden history of Mort Phobus.</em></p>
-    
-    <iframe class="pdf-container" src="MortPhobus.pdf"></iframe>
-
-    <p>If the document does not load, <a href="MortPhobus.pdf" target="_blank">click here to download it.</a></p>
+    <h1>🔐 Create Account</h1>
+    <form action="/signup" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <input type="password" name="password" placeholder="Password" required><br><br>
+        <button type="submit">Create Account</button>
+    </form>
 </body>
 </html>
