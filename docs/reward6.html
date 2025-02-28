@@ -33,13 +33,18 @@
                 });
 
                 const data = await response.json();
+                console.log("Reward unlock check:", data); // Debugging log to see the response
+
                 if (!data.unlocked) {
+                    // If the reward isn't unlocked, redirect to catalogue
                     window.location.href = "catalogue.html";
                 } else {
-                    document.body.style.display = "block"; // Show the reward page if unlocked
+                    // If unlocked, show the page
+                    document.body.style.display = "block";
                 }
             } catch (error) {
                 console.error("Error verifying reward:", error);
+                // If error, redirect to catalogue
                 window.location.href = "catalogue.html";
             }
         }
