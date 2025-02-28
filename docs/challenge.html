@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Challenge</title>
+    <title>Enter Challenge Code</title>
 </head>
 <body>
-    <h1>Enter the Challenge Code</h1>
-    <form action="/challenge" method="POST">
-        <input type="text" name="challengeCode" placeholder="Enter Code" required>
-        <button type="submit">Submit</button>
+    <h1>Challenge</h1>
+    <form action="/submit-code" method="POST">
+        <input type="text" name="username" placeholder="Username" required><br><br>
+        <input type="text" name="code" placeholder="Enter Challenge Code" required><br><br>
+        <button type="submit">Submit Code</button>
     </form>
 </body>
 </html>
