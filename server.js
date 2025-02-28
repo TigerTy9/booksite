@@ -60,7 +60,7 @@ app.post('/signup', async (req, res) => {
     // Save the user
     users.push({ username, password: hashedPassword });
 
-    res.redirect('/login');
+    res.redirect('/login.html');
 });
 
 // Start HTTPS server
