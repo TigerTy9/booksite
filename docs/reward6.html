@@ -17,12 +17,18 @@
             width: 100%;
             height: 80vh;
             margin-top: 30px;
+            display: none; /* Initially hide the PDF viewer */
         }
 
         .error-message {
             font-size: 1.5em;
             color: red;
             margin-top: 50px;
+        }
+
+        .congratulations-message {
+            font-size: 2em;
+            margin-bottom: 30px;
         }
     </style>
     <script>
@@ -46,9 +52,16 @@
                 const data = await response.json();
                 console.log("Reward unlock check:", data); // Debugging log to see the response
 
+                // Display the congratulatory message regardless of the reward status
+                document.body.innerHTML = `
+                    <div class="congratulations-message">
+                        🎉 Congratulations! You've unlocked this special reward!
+                    </div>
+                `;
+
                 if (!data.unlocked) {
                     // If the reward isn't unlocked, show an error message
-                    document.body.innerHTML = `<div class="error-message">You have not unlocked this reward yet. Please check the catalogue.</div>`;
+                    document.body.innerHTML += `<div class="error-message">You have not unlocked this reward yet. Please check the catalogue.</div>`;
                 } else {
                     // If unlocked, display the PDF viewer
                     showPDF();
@@ -56,7 +69,7 @@
             } catch (error) {
                 console.error("Error verifying reward:", error);
                 // If error, show an error message
-                document.body.innerHTML = `<div class="error-message">There was an issue verifying your reward. Please try again later.</div>`;
+                document.body.innerHTML += `<div class="error-message">There was an issue verifying your reward. Please try again later.</div>`;
             }
         }
 
@@ -71,9 +84,9 @@
             iframe.type = 'application/pdf';
             pdfContainer.appendChild(iframe);
 
-            // Append the PDF container to the body
-            document.body.innerHTML = ''; // Clear existing content
+            // Append the PDF container to the body and make it visible
             document.body.appendChild(pdfContainer);
+            pdfContainer.style.display = 'block'; // Make the PDF visible
         }
 
         window.onload = checkAccess;
