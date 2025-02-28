@@ -17,7 +17,7 @@ const certificate = fs.readFileSync('certs/domain.cert.pem', 'utf8');
 const credentials = { key: privateKey, cert: certificate };
 
 app.use(bodyParser.json());
-app.use(express.static('public'));  // Serve static files like HTML, CSS, and JS
+app.use(express.static('docs'));  // Serve static files like HTML, CSS, and JS
 
 // Middleware to verify JWT token
 const authenticateJWT = (req, res, next) => {
