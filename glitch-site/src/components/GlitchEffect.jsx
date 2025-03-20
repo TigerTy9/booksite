@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export default function GlitchEffect() {
   const [isGlitching, setIsGlitching] = useState(false);
   const [showSecret, setShowSecret] = useState(false);
-
+//
   useEffect(() => {
     const interval = setInterval(() => {
       setIsGlitching(true);
