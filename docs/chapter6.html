@@ -98,18 +98,18 @@
         window.onload = checkLogin;
     </script>
 </head>
-<div id="inject-menu"></div>
-<script>
-  fetch('/menu7.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('inject-menu').innerHTML = html;
-
-      // OPTIONAL: Populate user and rebellion level dynamically
-      document.getElementById('user-name').textContent = 'Ty';
-      document.getElementById('rebellion-lvl').textContent = '7';
-    });
-</script>
+ <div id="inject-menu"></div>
+    <script>
+      fetch('/menu7.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('inject-menu').innerHTML = html;
+    
+          // OPTIONAL: Populate user and rebellion level dynamically
+          document.getElementById('user-name').textContent = 'Ty';
+          document.getElementById('rebellion-lvl').textContent = '7';
+        });
+    </script>
 <body>
     <h1>🔐 Chapter 6 Decryption Challenge</h1>
     <p>Enter the decrypted code from the book:</p>
