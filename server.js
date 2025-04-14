@@ -131,6 +131,6 @@ app.get('/rewards', authenticateJWT, async (req, res) => {
 });
 
 // Start the server with HTTPS
-https.createServer(credentials, app).listen(PORT, () => {
+https.createServer(app).listen(PORT, () => {
     console.log(`Server running on https://localhost:${PORT}`);
 });
