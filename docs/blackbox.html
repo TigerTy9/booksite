@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLACKBOX :: Cybersecurity Terminal</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff66;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .terminal {
+      background: #000;
+      border: 1px solid #00ff66;
+      padding: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .prompt {
+      color: #00ff66;
+    }
+
+    .command {
+      color: #0f0;
+    }
+
+    .lesson {
+      margin-bottom: 25px;
+    }
+
+    .highlight {
+      color: #fff;
+      background: #00ff66;
+      padding: 2px 4px;
+      border-radius: 3px;
+    }
+
+    .box-title {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      color: #ff00ff;
+    }
+
+    .glow {
+      text-shadow: 0 0 5px #00ff66;
+    }
+
+    a {
+      color: #0ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<div id="inject-menu"></div>
+<script>
+  fetch('/menu7.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('inject-menu').innerHTML = html;
+
+      // OPTIONAL: Populate user and rebellion level dynamically
+      document.getElementById('user-name').textContent = 'Ty';
+      document.getElementById('rebellion-lvl').textContent = '7';
+    });
+</script>
+<body>
+  <div class="terminal">
+    <div class="box-title glow">[BLACKBOX INTERFACE] :: CYBERSECURITY BRIEFING</div>
+
+    <div class="lesson">
+      <div class="prompt">> LESSON 01: PASSWORDS</div>
+      <p class="command">Use <span class="highlight">long</span>, <span class="highlight">unique</span> passwords. Avoid dictionary words.</p>
+      <p class="command">Tools like <a href="https://1password.com" target="_blank">1Password</a> or <a href="https://keepersecurity.com" target="_blank">Keeper Security</a> can generate and store them.</p>
+    </div>
+
+    <div class="lesson">
+      <div class="prompt">> LESSON 02: 2FA (Two-Factor Authentication)</div>
+      <p class="command">Always enable 2FA — it acts like a second lock on your system.</p>
+      <p class="command">Use an app like <span class="highlight">Otka Verify</span> or <span class="highlight">Microsoft Authenticator</span>.</p>
+    </div>
+
+    <div class="lesson">
+      <div class="prompt">> LESSON 03: PHISHING</div>
+      <p class="command">Don't trust links in suspicious emails. Always verify the source manually.</p>
+      <p class="command">If unsure, check domain spelling. <span class="highlight">ex: paypaI.com</span> ≠ <span class="highlight">paypal.com</span></p>
+    </div>
+
+    <div class="lesson">
+      <div class="prompt">> LESSON 04: SOFTWARE UPDATES</div>
+      <p class="command">Update your OS and apps regularly. Patches fix <span class="highlight">vulnerabilities</span>.</p>
+      <p class="command">Attackers target outdated systems. Stay ahead.</p>
+    </div>
+
+    <div class="lesson">
+      <div class="prompt">> LESSON 05: PUBLIC WIFI</div>
+      <p class="command">Avoid sensitive activity on public Wi-Fi unless you're using a <span class="highlight">VPN</span>.</p>
+      <p class="command">Unencrypted traffic is easy to sniff.</p>
+    </div>
+
+    <div class="prompt">> END OF BRIEFING</div>
+    <p class="command">Use what you've learned. Stay sharp. Stay safe.</p>
+  </div>
+</body>
+</html>

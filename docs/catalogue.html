@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Catalogue</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .reward {
+            border: 1px solid #0f0;
+            padding: 20px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+        }
+        .locked {
+            opacity: 0.3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        async function loadRewards() {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const response = await fetch("/api/rewards/list", {
+                    method: "GET",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                if (!response.ok) {
+                    localStorage.removeItem("jwt");
+                    window.location.href = "login.html";
+                    return;
+                }
+
+                const data = await response.json();
+                displayRewards(data.unlockedRewards);
+            } catch (error) {
+                console.error("Error loading rewards:", error);
+                localStorage.removeItem("jwt");
+                window.location.href = "login.html";
+            }
+        }
+
+        function displayRewards(unlockedRewards) {
+            const rewards = [
+                { id: 6, name: "Secret Chapter 6 Bonus", url: "reward6.html" },
+                { id: 7, name: "Hidden Lore File", url: "reward7.html" }
+            ];
+
+            const container = document.getElementById("rewards-container");
+
+            rewards.forEach(reward => {
+                const div = document.createElement("div");
+                div.className = "reward";
+                if (!unlockedRewards.includes(reward.id)) {
+                    div.classList.add("locked");
+                }
+
+                div.innerHTML = `<h3>${reward.name}</h3>`;
+                
+                if (unlockedRewards.includes(reward.id)) {
+                    div.innerHTML += `<a href="${reward.url}">Access</a>`;
+                } else {
+                    div.innerHTML += `<p>Locked</p>`;
+                }
+
+                container.appendChild(div);
+            });
+        }
+
+        window.onload = loadRewards;
+    </script>
+</head>
+<body>
+    <h1>🎁 Reward Catalogue</h1>
+    <div id="rewards-container"></div>
+</body>
+</html>

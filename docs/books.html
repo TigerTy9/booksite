@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cyber Restricted Series - Ty Thomasson</title>
+
+  <style>
+    /* Global Reset */
+    * {
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    .bg-animation {
+      position: fixed;
+      top: 0; 
+      left: 0; 
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    /* .square {
+      position: absolute;
+      top: -10vh;
+      width: 20px;
+      height: 20px;
+      background: #0ff;
+      opacity: 0.7;
+      box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+      animation: floatDown 10s linear infinite;
+    } */
+
+    .square {
+        position: absolute;
+        top: -10vh;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #0ff;
+        background: transparent;
+        opacity: 0.7;
+        box-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+        animation: floatDown 10s linear infinite;
+        }
+
+
+    @keyframes floatDown {
+      0% {
+        transform: translateY(0);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    .square:nth-child(1) {
+      left: 10%;
+      animation-duration: 12s;
+      width: 15px; height: 15px;
+    }
+    .square:nth-child(2) {
+      left: 30%;
+      animation-duration: 8s;
+    }
+    .square:nth-child(3) {
+      left: 50%;
+      animation-duration: 10s;
+      border: 2px solid #f0f;
+      /* background: #f0f; */
+      box-shadow: 0 0 10px #f0f, 0 0 20px #f0f;
+    }
+    .square:nth-child(4) {
+      left: 70%;
+      animation-duration: 13s;
+      width: 25px; height: 25px;
+    }
+    .square:nth-child(5) {
+      left: 90%;
+      animation-duration: 9s;
+      border: 2px solid #ff0;
+      /* background: #ff0; */
+      box-shadow: 0 0 10px #ff0, 0 0 20px #ff0;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    header h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      text-shadow: 
+        0 0 10px rgba(0,255,255,0.7), 
+        0 0 20px rgba(255,0,255,0.6);
+      position: relative;
+    }
+
+    .countdown-container {
+      font-size: 1.5em;
+      margin: 20px auto;
+      max-width: 600px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #fff;
+      display: inline-block;
+    }
+
+    .book-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 40px 20px;
+  gap: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.6);
+}
+
+.book {
+  width: 300px;
+  height: 480px;  /* Fixed height for all book containers */
+  background: #111;
+  border: 1px solid #fff;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s;
+  overflow: hidden;
+  margin: auto 0;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.6); /* Glowing effect */
+  position: relative;
+}
+
+.book:hover {
+  transform: scale(1.05);
+}
+
+/* Hover effect on the cover */
+.book:hover img {
+  opacity: 0.4; /* Fade the cover */
+}
+
+.book-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.book-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  transition: opacity 0.3s ease;
+}
+
+.book-img.hover-img {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.book:hover .book-img.hover-img {
+  opacity: 0.3;
+}
+
+.book:hover .book-img.default-img {
+  opacity: 0;
+}
+
+
+/* Position the writingstate as an overlay */
+.writingstate {
+  position: absolute;
+  bottom: 0;  /* Always at the bottom */
+  left: 0;
+  width: 100%;  /* Span the entire width of the book */
+  background: rgba(0, 0, 0, 0.7);  /* Dark background for visibility */
+  color: #fff;
+  font-size: 1em;
+  padding: 5px 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 1;  /* Ensure it stays above the image */
+  transition: background 0.3s ease; /* Optional, for smooth transitions */
+}
+
+.writingstate.editing {
+  color: #f39c12;  /* Orange */
+}
+
+.writingstate.outlined {
+  color: #3498db;  /* Blue */
+}
+
+.writingstate.completed {
+  color: #2ecc71;  /* Green */
+}
+
+.writingstate.planned {
+  color: #9b9b9b;  /* Green */
+}
+
+
+.book-description {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  color: #ccc;
+  font-size: 1em;
+  padding: 15px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-align: center;
+}
+
+
+.book:hover .book-description {
+  opacity: 1; /* Show description on hover */
+}
+
+.book-container img {
+  max-width: 100%;  /* Ensures the image does not exceed the width of the book container */
+  height: auto;     /* Maintains the aspect ratio of the image */
+  object-fit: contain;  /* Ensures the image scales to fit inside the container without stretching */
+  display: block;
+  margin: 0 auto;
+  transition: opacity 0.3s ease;
+}
+
+
+
+    @media(max-width: 768px) {
+      .book {
+        width: 90%;
+      }
+
+      header h1 {
+        font-size: 2em;
+      }
+    }
+  </style>
+</head>
+<div id="inject-menu"></div>
+<script>
+  fetch('/menu7.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('inject-menu').innerHTML = html;
+
+      // OPTIONAL: Populate user and rebellion level dynamically
+      document.getElementById('user-name').textContent = 'Ty';
+      document.getElementById('rebellion-lvl').textContent = '7';
+    });
+</script>
+
+<body>
+
+  <div class="bg-animation">
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+    <div class="square"></div>
+  </div>
+
+  <header>
+    <h1>Cyber Restricted Series</h1>
+    <!-- <div class="countdown-container">
+      <p>Next Book Release In:</p>
+      <div id="countdown"></div>
+    </div> -->
+  </header>
+
+  <!-- Book Cards -->
+  <div class="book-container">
+    <div class="book">
+        <div class="book-image-wrapper">
+          <img class="book-img" src="CyberRestrictedCover6.png" data-hover="CyberRestrictedCoverGlitched.png" alt="Cyber Restricted Cover">
+        </div>
+      <!-- <div class="book-title">Cyber Restricted</div> -->
+      <p class="book-description">
+        The first installment in a dystopian world of technology, secrets, 
+        and personal powers that threaten to disrupt society’s fragile balance.
+      </p>
+      <p class="writingstate editing">Editing</p>
+    </div>
+
+    <div class="book">
+      <img src="CyberConfinedCover5.1.png" alt="Cyber Confined Cover">
+      <!-- <div class="book-title">Cyber Confined</div> -->
+      <p class="book-description">
+        The saga continues as Ender delves deeper into his powers, 
+        confronting new threats from a society on the brink of collapse.
+      </p>
+      <p class="writingstate outlined">Outlined</p>
+    </div>
+</div>
+<h1 style="text-align: center;">Backstories</h1>
+    <div class="book-container">
+    <div class="book">
+        <img src="MortPhobusCover.png" alt="Mort Phobus Cover">
+        <!-- <div class="book-title">Cyber Confined</div> -->
+        <p class="book-description">
+           Novella from Mort Phobus's point of view.
+        </p>
+        <p class="writingstate planned">Planned</p>
+        </div>
+        <div class="book">
+            <img src="AxelCover.png" alt="Axel Cover">
+            <!-- <div class="book-title">Cyber Confined</div> -->
+            <p class="book-description">
+             Novella surrounding Axels life, the grandfather.
+            </p>
+            <p class="writingstate planned">Planned</p>
+          </div>
+  </div>
+
+  <h1 style="text-align: center;">Short Stories</h1>
+    <div class="book-container">
+    <div class="book">
+        <img src="HiddenStories.png" alt="Uncover on the site :D">
+        <!-- <div class="book-title">Cyber Confined</div> -->
+        <p class="book-description">
+           Where the glitches may appear...
+        </p>
+        <p class="writingstate planned">Status Unknown</p>
+        </div>
+  </div>
+  <script>
+    document.querySelectorAll('.book-img').forEach(img => {
+      const hoverSrc = img.getAttribute('data-hover');
+      if (hoverSrc) {
+        const hoverImg = document.createElement('img');
+        hoverImg.src = hoverSrc;
+        hoverImg.className = 'book-img hover-img';
+        img.classList.add('default-img');
+        img.parentNode.appendChild(hoverImg);
+      }
+    });
+  </script>
+  
+  <script>
+    var countDownDate = new Date("Aug 12, 2025 00:00:00").getTime();
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = countDownDate - now;
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / 
+                             (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / 
+                               (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("countdown").innerHTML = 
+        days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countdown").innerHTML = "Released!";
+      }
+    }, 1000);
+  </script>
+
+</body>
+</html>
