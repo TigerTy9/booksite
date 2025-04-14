@@ -22,90 +22,83 @@
       z-index: 10;
     }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 </head>
 <body>
   <div id="infoBox"></div>
+
+  <!-- Load THREE.js from jsDelivr instead of Cloudflare -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js"></script>
   <script>
-    // Wait until THREE is defined
-    function startWhenReady() {
-      if (typeof THREE === 'undefined') {
-        return setTimeout(startWhenReady, 50);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const infoBox = document.getElementById('infoBox');
+
+    const tiers = [
+      { name: 'The Shallows', height: 1, radius: 30, color: 0x222222 },
+      { name: 'The Midst', height: 2, radius: 22, color: 0x444444 },
+      { name: 'The Elevation', height: 3, radius: 14, color: 0x666666 },
+      { name: 'The Eminence', height: 10, radius: 5, color: 0x00ff00 },
+    ];
+
+    const tierMeshes = [];
+    tiers.forEach((tier) => {
+      const geometry = new THREE.CylinderGeometry(tier.radius, tier.radius, tier.height, 64);
+      const material = new THREE.MeshStandardMaterial({ color: tier.color });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.y = tier.height / 2;
+      mesh.name = tier.name;
+      scene.add(mesh);
+      tierMeshes.push(mesh);
+    });
+
+    const light = new THREE.PointLight(0xffffff, 1, 100);
+    light.position.set(50, 50, 50);
+    scene.add(light);
+
+    camera.position.z = 60;
+    camera.position.y = 20;
+    camera.lookAt(0, 0, 0);
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function onMouseMove(event) {
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(tierMeshes);
+
+      if (intersects.length > 0) {
+        const tier = intersects[0].object.name;
+        infoBox.style.display = 'block';
+        infoBox.style.left = event.clientX + 'px';
+        infoBox.style.top = event.clientY + 'px';
+        infoBox.textContent = tier;
+      } else {
+        infoBox.style.display = 'none';
       }
-
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
-
-      const infoBox = document.getElementById('infoBox');
-
-      const tiers = [
-        { name: 'The Shallows', height: 1, radius: 30, color: 0x222222 },
-        { name: 'The Midst', height: 2, radius: 22, color: 0x444444 },
-        { name: 'The Elevation', height: 3, radius: 14, color: 0x666666 },
-        { name: 'The Eminence', height: 10, radius: 5, color: 0x00ff00 },
-      ];
-
-      const tierMeshes = [];
-      tiers.forEach((tier, index) => {
-        const geometry = new THREE.CylinderGeometry(tier.radius, tier.radius, tier.height, 64);
-        const material = new THREE.MeshStandardMaterial({ color: tier.color });
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.y = tier.height / 2;
-        mesh.name = tier.name;
-        scene.add(mesh);
-        tierMeshes.push(mesh);
-      });
-
-      const light = new THREE.PointLight(0xffffff, 1, 100);
-      light.position.set(50, 50, 50);
-      scene.add(light);
-
-      camera.position.z = 60;
-      camera.position.y = 20;
-      camera.lookAt(0, 0, 0);
-
-      const raycaster = new THREE.Raycaster();
-      const mouse = new THREE.Vector2();
-
-      function onMouseMove(event) {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-        const intersects = raycaster.intersectObjects(tierMeshes);
-
-        if (intersects.length > 0) {
-          const tier = intersects[0].object.name;
-          infoBox.style.display = 'block';
-          infoBox.style.left = event.clientX + 'px';
-          infoBox.style.top = event.clientY + 'px';
-          infoBox.textContent = tier;
-        } else {
-          infoBox.style.display = 'none';
-        }
-      }
-
-      window.addEventListener('mousemove', onMouseMove);
-      window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      });
-
-      function animate() {
-        requestAnimationFrame(animate);
-        tierMeshes.forEach((mesh, i) => {
-          mesh.rotation.y += 0.002 + i * 0.0005;
-        });
-        renderer.render(scene, camera);
-      }
-      animate();
     }
 
-    startWhenReady();
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      tierMeshes.forEach((mesh, i) => {
+        mesh.rotation.y += 0.002 + i * 0.0005;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
   </script>
 </body>
 </html>
