@@ -1,0 +1,57 @@
+<div class="core-ui">
+    <div class="core-top">
+      CORE LINKED ░ User: <span id="user-name">Guest</span> ░ Rebellion Level: <span id="rebellion-lvl">0</span>
+    </div>
+    <div class="core-tabs">
+        <a href="/books.html">BOOKS</a>
+      <a href="/challenges.html">CHALLENGES</a>
+      <a href="/scripts.html">SCRIPTS</a>
+      <a href="/control.html">CONTROL</a>
+      <a href="/blackbox.html">BLACKBOX</a>
+      <a href="/projects.html">PROJECTS</a>
+      <a href="/logout.html">DISCONNECT</a>
+      <a href="/ByteScript.html">ByteScript</a>
+      <a href="/NeuraWrite.html">NeuraWrite </a>
+
+    </div>
+  </div>
+  
+  <style>
+    .core-ui {
+      background-color: #020202;
+      color: #00ffee;
+      font-family: monospace;
+      padding: 12px;
+      border-bottom: 1px solid #00ffee;
+    }
+  
+    .core-top {
+      padding-bottom: 5px;
+      font-size: 0.95em;
+      border-bottom: 1px solid #00ffee;
+    }
+  
+    .core-tabs {
+      margin-top: 10px;
+      display: flex;
+      gap: 18px;
+    }
+  
+    .core-tabs a {
+      color: #00ffee;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+  
+    .core-tabs a:hover {
+      color: #ff00ff;
+    }
+  
+    .core-tabs a::before {
+      content: '>';
+      margin-right: 4px;
+      opacity: 0.7;
+    }
+  </style>
+  

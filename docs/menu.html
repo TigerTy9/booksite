@@ -1,0 +1,53 @@
+<!-- menu.html -->
+<div id="hacker-menu" class="terminal-bar">
+    <div class="terminal-header">
+      <span class="terminal-title">[ACCESS PANEL]</span>
+      <span class="user-profile">User: <span id="user-name">Guest</span> | Rebellion Level: <span id="rebellion-lvl">0</span></span>
+    </div>
+    <div class="terminal-tabs">
+      <a href="/dashboard.html">DASHBOARD</a>
+      <a href="/missions.html">MISSIONS</a>
+      <a href="/intel.html">INTEL</a>
+      <a href="/network.html">NETWORK</a>
+      <a href="/logout.html">LOGOUT</a>
+    </div>
+  </div>
+  
+  <style>
+    .terminal-bar {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 10px;
+      border-bottom: 2px solid #0f0;
+    }
+    .terminal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px dashed #0f0;
+    }
+    .terminal-title {
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .user-profile {
+      font-style: italic;
+    }
+    .terminal-tabs {
+      margin-top: 8px;
+      display: flex;
+      gap: 15px;
+    }
+    .terminal-tabs a {
+      text-decoration: none;
+      color: #0f0;
+      transition: color 0.3s;
+    }
+    .terminal-tabs a:hover {
+      color: #f00;
+    }
+  </style>
+  

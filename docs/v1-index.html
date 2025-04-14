@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Restricted - Ty Thomasson</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: #FFD700;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            text-transform: uppercase;
+        }
+        .cover {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .countdown {
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+        .hidden-challenge {
+            font-size: 1.2em;
+            margin-top: 30px;
+            color: #00FF00;
+        }
+        .preview-link {
+            font-size: 1.3em;
+            margin-top: 30px;
+            display: block;
+            color: #00FF00;
+            text-decoration: none;
+            border: 2px solid #FFD700;
+            padding: 10px;
+            width: 300px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
+        .preview-link:hover {
+            background: #FFD700;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cyber Restricted</h1>
+        <h2>By Ty Thomasson</h2>
+        <img src="book-cover.jpg" alt="Cyber Restricted Cover" class="cover">
+        <p><i>The digital frontier is no longer safe...</i></p>
+        <div class="countdown" id="countdown"></div>
+        <a href="preview.html" class="preview-link">Click here for a preview of Prologue and Chapter 1</a>
+        <div class="hidden-challenge">Find the hidden message in Ender’s notes for exclusive access.</div>
+    </div>
+    <script>
+        function updateCountdown() {
+            const releaseDate = new Date("July 20, 2025 00:00:00").getTime();
+            const now = new Date().getTime();
+            const difference = releaseDate - now;
+            
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                
+                document.getElementById("countdown").innerHTML = `Pre-release in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                document.getElementById("countdown").innerHTML = "Cyber Restricted is now available!";
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>

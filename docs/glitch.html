@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cyber Restricted</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Share Tech Mono', monospace;
+      background-color: black;
+      color: #facc15;
+      overflow: hidden;
+    }
+
+    @keyframes glitch {
+      0% { transform: translateX(0); text-shadow: 0 0 6px #ff0; }
+      20% { transform: translateX(-2px); }
+      40% { transform: translateX(2px); text-shadow: 0 0 14px #ff0; }
+      60% { transform: translateX(-1px); }
+      80% { transform: translateX(1px); }
+      100% { transform: translateX(0); text-shadow: 0 0 8px #ff0; }
+    }
+
+    .glitch-text {
+      animation: glitch 0.4s infinite;
+    }
+
+    .rain-line {
+      animation: rainDrop linear infinite;
+    }
+
+    @keyframes rainDrop {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100%); }
+    }
+
+    .crt::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(to bottom, rgba(0,255,0,0.02) 0px, rgba(0,255,0,0.02) 1px, transparent 2px, transparent 4px);
+      mix-blend-mode: overlay;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .crt::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,255,0,0.05) 0%, transparent 80%);
+      animation: flicker 1.5s infinite;
+      mix-blend-mode: screen;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.3; }
+    }
+
+    .glitchy-lines::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 0, 0.03) 0px,
+        rgba(0, 255, 0, 0.03) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: glitchLines 1.2s infinite steps(2, end);
+      mix-blend-mode: screen;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    @keyframes glitchLines {
+      0%, 100% { transform: translateY(0) skewX(0deg); opacity: 0.53; }
+      15% { transform: translateY(-1px) skewX(-1deg); opacity: 0.57; }
+      30% { transform: translateY(1px) skewX(2deg); opacity: 0.54; }
+      45% { transform: translateY(-2px) skewX(-1deg); opacity: 0.8; }
+      60% { transform: translateY(0) skewX(1deg); opacity: 0.58; }
+      75% { transform: translateY(1px) skewX(-2deg); opacity: 0.56; }
+      100% { transform: translateY(0) skewX(0deg); opacity: 0.54; }
+    }
+
+    .terminal-text span.char-glitch {
+      display: inline-block;
+      animation: charGlitch 0.3s ease-in-out;
+    }
+
+    @keyframes charGlitch {
+      0% { opacity: 0.8; transform: translateX(0); text-shadow: 0 0 6px #0f0; }
+      50% { transform: translateX(-1px); text-shadow: 0 0 16px #0f0; }
+      100% { transform: translateX(0); }
+    }
+
+    .blink-cursor::after {
+      content: "_";
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    .fade-in-delayed {
+      animation: fadeInDelayed 1s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeInDelayed {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .static-burst {
+      position: absolute;
+      inset: 0;
+      background: white;
+      opacity: 0.9;
+      z-index: 200;
+      animation: burst 0.2s ease-out forwards;
+    }
+
+    @keyframes burst {
+      0% { opacity: 0.9; }
+      100% { opacity: 0; }
+    }
+
+    .full-screen-glitch {
+      animation: fullScreenGlitch 2s infinite alternate;
+      z-index: 9999;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+    }
+
+    @keyframes fullScreenGlitch {
+      0% { opacity: 0; transform: rotate(0deg); }
+      50% { opacity: 0.6; transform: rotate(5deg); }
+      100% { opacity: 1; transform: rotate(-5deg); }
+    }
+
+    .shadow-neon-red { box-shadow: 0 0 10px #f00, 0 0 20px #f00; }
+    .shadow-neon-green { box-shadow: 0 0 10px #0f0, 0 0 20px #0f0; }
+    .border-neon-green { border-color: #0f0; }
+  </style>
+</head>
+<body>
+  <audio id="glitch-audio" src="https://cdn.pixabay.com/download/audio/2022/12/09/audio_9df9b4db26.mp3" preload="auto"></audio>
+  <div id="main" class="relative h-screen w-full flex items-center justify-center text-yellow-400"></div>
+
+  <script>
+    const main = document.getElementById("main");
+
+    let isGlitching = false;
+    let showSecret = false;
+    let secretElement = null;
+
+    function createRain() {
+      const rainContainer = document.createElement("div");
+      rainContainer.className = "absolute inset-0 w-full h-full opacity-20 overflow-hidden pointer-events-none";
+      for (let i = 0; i < 80; i++) {
+        const bar = document.createElement("div");
+        bar.className = "absolute w-1 h-full bg-yellow-500 rain-line";
+        bar.style.left = Math.random() * 100 + "%";
+        bar.style.animationDuration = (Math.random() * 2 + 1) + "s";
+        rainContainer.appendChild(bar);
+      }
+      return rainContainer;
+    }
+
+    function createSecretElement() {
+      const secret = document.createElement("div");
+      secret.className = "absolute inset-0 bg-black text-green-400 flex flex-col items-center justify-center p-10 border border-neon-green shadow-neon-green terminal-text crt glitchy-lines";
+
+      const heading = document.createElement("h2");
+      heading.className = "text-6xl font-extrabold mb-6 tracking-wide text-green-500 z-10 fade-in-delayed";
+      const fullText = "** ACCESS GRANTED **";
+      let index = 0;
+      const typeInterval = setInterval(() => {
+        const charSpan = document.createElement("span");
+        charSpan.className = "char-glitch";
+        charSpan.textContent = fullText[index];
+        heading.appendChild(charSpan);
+        index++;
+        if (index >= fullText.length) clearInterval(typeInterval);
+      }, 50);
+
+      const para = document.createElement("p");
+      para.className = "text-xl text-center font-mono leading-relaxed z-10 fade-in-delayed";
+      para.style.animationDelay = "0.5s";
+      const paraText = [
+        'Data stream decrypted. You have entered the black zone.',
+        'The system is compromised. Escape is an illusion.',
+        'The ghost in the machine watches. Every command is logged.'
+      ];
+      let line = 0;
+      const typeLine = () => {
+        let char = 0;
+        const lineText = paraText[line];
+        const span = document.createElement('span');
+        para.appendChild(span);
+        const typeChar = setInterval(() => {
+          span.textContent += lineText[char];
+          char++;
+          if (char >= lineText.length) {
+            clearInterval(typeChar);
+            line++;
+            if (line < paraText.length) {
+              para.appendChild(document.createElement("br"));
+              setTimeout(typeLine, 500);
+            } else {
+              const cursor = document.createElement("span");
+              cursor.className = "blink-cursor";
+              cursor.textContent = "";
+              span.appendChild(cursor);
+            }
+          }
+        }, 20);
+      };
+      typeLine();
+
+      const btn = document.createElement("button");
+      btn.className = "mt-6 border border-green-400 bg-black text-green-400 px-8 py-4 hover:bg-green-700 shadow-neon-green text-xl z-10 fade-in-delayed";
+      btn.style.animationDelay = "1s";
+      btn.textContent = "TERMINATE CONNECTION";
+      btn.onclick = () => {
+        const burst = document.createElement("div");
+        burst.className = "static-burst";
+        main.appendChild(burst);
+        setTimeout(() => {
+          main.removeChild(burst);
+          showSecret = false;
+          secretElement = null;
+          render();
+        }, 200);
+      };
+
+      secret.appendChild(heading);
+      secret.appendChild(para);
+      secret.appendChild(btn);
+
+      document.getElementById("glitch-audio").play().catch(() => {});
+      setTimeout(() => {
+        const glitchScreen = document.createElement("div");
+        glitchScreen.className = "full-screen-glitch";
+        main.appendChild(glitchScreen);
+
+        setTimeout(() => {
+          glitchScreen.remove();
+        }, 2000);  // Full-screen glitch duration
+      }, 10000);
+
+      return secret;
+    }
+
+    function render() {
+      if (showSecret) {
+        if (!secretElement) {
+          secretElement = createSecretElement();
+          main.innerHTML = "";
+          main.appendChild(secretElement);
+        }
+        return;
+      }
+
+      main.innerHTML = "";
+      main.appendChild(createRain());
+
+      const overlay = document.createElement("div");
+      overlay.className = "absolute inset-0 bg-black glitch-overlay pointer-events-none";
+      overlay.style.opacity = isGlitching ? "0.9" : "0";
+      main.appendChild(overlay);
+
+      const title = document.createElement("h1");
+      title.className = `text-6xl font-extrabold tracking-widest relative z-10 ${isGlitching ? "glitch-text text-yellow-300" : "text-yellow-400"}`;
+      title.textContent = "██ CYBER RESTRICTED ██";
+      main.appendChild(title);
+
+      if (isGlitching) {
+        const warning = document.createElement("div");
+        warning.className = "absolute inset-0 flex flex-col items-center justify-center text-red-500 text-2xl backdrop-blur-lg glitch-text z-20";
+
+        const p1 = document.createElement("p");
+        p1.textContent = "** INTRUSION DETECTED **";
+        const p2 = document.createElement("p");
+        p2.textContent = "ENCRYPTION OVERRIDE IN PROGRESS...";
+
+        const btn = document.createElement("button");
+        btn.className = "mt-4 border border-red-500 bg-black text-red-500 px-6 py-3 hover:bg-red-700 shadow-neon-red";
+        btn.textContent = "EXECUTE BACKDOOR";
+        btn.onclick = () => {
+          showSecret = true;
+          main.innerHTML = "";
+          render();
+        };
+
+        warning.appendChild(p1);
+        warning.appendChild(p2);
+        warning.appendChild(btn);
+        main.appendChild(warning);
+      }
+    }
+
+    function glitchLoop(initialDelay = 4000) {
+      setTimeout(() => {
+        const glitchCycle = () => {
+          if (!showSecret) {
+            isGlitching = true;
+            render();
+            setTimeout(() => {
+              isGlitching = false;
+              render();
+            }, 3000);
+          }
+          setTimeout(glitchCycle, Math.random() * 6000 + 6000);
+        };
+        glitchCycle();
+      }, initialDelay);
+    }
+
+    render();
+    glitchLoop();
+  </script>
+</body>
+</html>

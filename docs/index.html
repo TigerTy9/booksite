@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Restricted - Ty Thomasson</title>
+    <style>
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 1px #FFD700, 0 0 3px #FFD700, 0 0 5px #FFD700; }
+            50% { text-shadow: 0 0 2px #FFEA00, 0 0 4px #FFEA00, 0 0 6px #FFEA00; }
+            100% { text-shadow: 0 0 1px #FFD700, 0 0 3px #FFD700, 0 0 5px #FFD700; }
+        }
+        @keyframes hackerText {
+            0% { opacity: 0.1; }
+            50% { opacity: 1; }
+            100% { opacity: 0.1; }
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, #0a0a0a, #000);
+            color: #FFD700;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            overflow: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            animation: neonGlow 1.5s infinite alternate;
+        }
+        .cover {
+            max-width: 80%;
+            max-height: 600px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        .countdown {
+            font-size: 1.5em;
+            margin-top: 20px;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .preview-link, .series-link {
+            font-size: 1.3em;
+            margin-top: 30px;
+            display: inline-block;
+            color: #00FF00;
+            text-decoration: none;
+            border: 2px solid #00FF00;
+            padding: 12px 20px;
+            width: auto;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+        .preview-link:hover, .series-link:hover {
+            background: #00FF00;
+            color: black;
+            box-shadow: 0 0 10px #00FF00;
+        }
+        .hidden-challenge {
+            font-size: 1.2em;
+            margin-top: 30px;
+            color: #00FF00;
+        }
+        .hacker-text {
+            font-size: 1.2em;
+            color: #00FF00;
+            margin-top: 30px;
+            font-weight: bold;
+            animation: hackerText 3s infinite;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(transparent, rgba(255, 255, 255, 0.02) 1px, transparent 2px);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .donate-link {
+            font-size: 1.5em;
+            margin-top: 30px;
+            display: inline-block;
+            color: #00FF00;
+            text-decoration: none;
+            border: 2px solid #00FF00;
+            padding: 12px 20px;
+            width: auto;
+            border-radius: 10px;
+            transition: all 0.3s ease-in-out;
+        }
+        .donate-link:hover {
+            background: #00FF00;
+            color: black;
+            box-shadow: 0 0 10px #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="container">
+        <h1>Cyber Restricted</h1>
+        <h2>By Ty Thomasson</h2>
+        <img src="book-cover.jpg" alt="Cyber Restricted Cover" class="cover">
+        <!-- <p><i>The digital frontier is no longer safe...</i></p> -->
+        <div class="countdown" id="countdown"></div>
+        <div class="hacker-text">[ SYSTEM LOG: ACCESS GRANTED... LOADING RESTRICTED FILES ]</div>
+
+        <a href="preview.html" class="preview-link">Click here for a Preview</a>
+        <a href="series.html" class="series-link">Explore Other Books in the Series</a>
+        <a href="donate.html" class="donate-link">Support Me on PayPal!</a>
+        <div class="hidden-challenge">Find the hidden message in Ender’s notes for exclusive access.</div>
+    </div>
+    <script>
+        function updateCountdown() {
+            const releaseDate = new Date("July 20, 2025 00:00:00").getTime();
+            const now = new Date().getTime();
+            const difference = releaseDate - now;
+            
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                
+                document.getElementById("countdown").innerHTML = `Estimated Pre-release in ${days}d ${hours}h ${minutes}m ${seconds}s`;
+            } else {
+                document.getElementById("countdown").innerHTML = "Cyber Restricted is now available!";
+            }
+        }
+        
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>

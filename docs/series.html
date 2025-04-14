@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Series - Books</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: black;
+            color: #FFD700;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            animation: neonGlow 1.5s infinite alternate;
+        }
+        .book-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .book {
+            width: 250px;
+            text-align: center;
+        }
+        .book img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+            transition: transform 0.3s;
+        }
+        .book img:hover {
+            transform: scale(1.1);
+        }
+        .book-title {
+            margin-top: 10px;
+            font-size: 1.3em;
+        }
+        .back-link {
+            font-size: 1.3em;
+            display: inline-block;
+            color: #00FF00;
+            text-decoration: none;
+            border: 2px solid #00FF00;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 30px;
+            transition: all 0.3s ease-in-out;
+        }
+        .back-link:hover {
+            background: #00FF00;
+            color: black;
+            box-shadow: 0 0 10px #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cyber Series</h1>
+        <p>Explore the books in the Cyber series by Ty Thomasson.</p>
+        <div class="book-grid">
+            <div class="book">
+                <a href="cyber-restricted.html">
+                    <img src="book-cover.jpg" alt="Cyber Restricted">
+                    <div class="book-title">Cyber Restricted</div>
+                </a>
+            </div>
+            <div class="book">
+                <a href="cyber-confined.html">
+                    <img src="cyberconfined.PNG" alt="Cyber Confined">
+                    <div class="book-title">Cyber Confined</div>
+                </a>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">Back to Main Page</a>
+    </div>
+</body>
+</html>

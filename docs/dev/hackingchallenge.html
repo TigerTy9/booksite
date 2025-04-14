@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Reboot - Hacking Challenge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: black;
+      color: #00ff00;
+      font-family: 'Orbitron', sans-serif;
+      text-align: center;
+      padding: 20px;
+      transition: background 0.5s;
+    }
+    #gameContainer {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border: 2px solid #00ff00;
+      background: rgba(0, 0, 0, 0.8);
+    }
+    .code {
+      font-size: 1.5em;
+      margin: 10px;
+      display: inline-block;
+      transition: all 0.2s ease-in-out;
+    }
+    #inputCode {
+      margin-top: 10px;
+      padding: 5px;
+      background: black;
+      color: #00ff00;
+      border: 1px solid #00ff00;
+      text-align: center;
+    }
+    #submitCode {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background: #00ff00;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+    #resultMessage {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    #fileViewer {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      border: 2px solid #00ff00;
+      background: rgba(0, 0, 0, 0.9);
+      text-align: left;
+    }
+    #timer {
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .lockdown {
+      background: red !important;
+      color: white !important;
+      animation: flicker 0.5s infinite alternate;
+    }
+    @keyframes flicker {
+      from { background: red; }
+      to { background: darkred; }
+    }
+    .glitch {
+      animation: glitchEffect 0.3s linear infinite;
+    }
+    @keyframes glitchEffect {
+      0% { transform: translate(1px, -1px); color: red; }
+      25% { transform: translate(-1px, 1px); color: cyan; }
+      50% { transform: translate(2px, -2px); color: lime; }
+      75% { transform: translate(-2px, 2px); color: yellow; }
+      100% { transform: translate(0, 0); color: #00ff00; }
+    }
+  </style>
+</head>
+<body>
+  <h1>System Reboot - Hacking Challenge</h1>
+  <div id="gameContainer">
+    <p>Enter the correct binary sequences to bypass security before time runs out:</p>
+    <p class="code" id="binaryCode"></p>
+    <p id="stage">Stage: <span id="currentStage">1</span>/5</p>
+    <p id="timer">Time Remaining: <span id="countdown">15</span> seconds</p>
+    <input type="text" id="inputCode" placeholder="Enter binary code">
+    <button id="submitCode" onclick="checkCode()">Submit</button>
+    <p id="resultMessage"></p>
+  </div>
+  <div id="fileViewer">
+    <h2>Accessing Files...</h2>
+    <pre id="fileContent">[FILE CONTENT WILL APPEAR HERE]</pre>
+  </div>
+  <script>
+    let correctCode = "";
+    let countdown;
+    let currentStage = 1;
+    const totalStages = 5;
+    let failures = 0;
+    const files = {
+      "Level 1": "File A - Project Ascendex: Neural implant trials begin.",
+      "Level 2": "File B - Subject #190: Resistance activities detected.",
+      "Level 3": "File C - Blackout Protocol: Cybersecurity breach response.",
+      "Level 4": "File D - Neural Override Codes: WARNING: Unauthorized access.",
+    };
+
+    function generateBinaryCode() {
+      let length = 8 + (currentStage > 3 ? 2 : 0); // Dynamic difficulty
+      correctCode = "";
+      for (let i = 0; i < length; i++) {
+        correctCode += Math.random() > 0.5 ? "1" : "0";
+      }
+      document.getElementById("binaryCode").innerText = correctCode;
+      document.getElementById("currentStage").innerText = currentStage;
+      startTimer();
+    }
+
+    function startTimer() {
+      let timeLeft = 15 - Math.floor(currentStage / 2);
+      document.getElementById("countdown").innerText = timeLeft;
+      clearInterval(countdown);
+      countdown = setInterval(() => {
+        timeLeft--;
+        document.getElementById("countdown").innerText = timeLeft;
+        if (timeLeft <= 0) {
+          triggerLockdown();
+        }
+      }, 1000);
+    }
+
+    function checkCode() {
+      let userInput = document.getElementById("inputCode").value;
+      let resultMessage = document.getElementById("resultMessage");
+      let fileViewer = document.getElementById("fileViewer");
+      let fileContent = document.getElementById("fileContent");
+
+      clearInterval(countdown);
+      
+      if (userInput === correctCode) {
+        failures = 0;
+        if (currentStage < totalStages) {
+          resultMessage.innerText = "STAGE CLEARED. NEXT CHALLENGE LOADING...";
+          resultMessage.style.color = "#00ff00";
+          currentStage++;
+          setTimeout(generateBinaryCode, 1500);
+        } else {
+          resultMessage.innerText = "ACCESS GRANTED. SYSTEM REBOOT SUCCESSFUL.";
+          fileViewer.style.display = "block";
+          let accessLevel = Math.floor(Math.random() * 4) + 1;
+          fileContent.innerText = files[`Level ${accessLevel}`];
+          currentStage = 1;
+        }
+      } else {
+        failures++;
+        resultMessage.innerText = "ACCESS DENIED. TRACE DETECTED.";
+        resultMessage.style.color = "red";
+        if (failures >= 2) triggerLockdown();
+        currentStage = 1;
+      }
+      generateBinaryCode();
+    }
+
+    function triggerLockdown() {
+      document.body.classList.add("lockdown");
+      setTimeout(() => {
+        document.body.classList.remove("lockdown");
+        failures = 0;
+        generateBinaryCode();
+      }, 10000);
+    }
+
+    generateBinaryCode();
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLACKBOX :: PenTest Lab</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff66;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+
+    .lab-container {
+      max-width: 800px;
+      margin: auto;
+      border: 1px solid #00ff66;
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 1.3em;
+      color: #ff00ff;
+      margin: 20px 0 10px;
+      text-shadow: 0 0 5px #ff00ff;
+    }
+
+    label, input, button {
+      display: block;
+      margin-bottom: 10px;
+      background-color: black;
+      color: #0f0;
+      border: 1px solid #00ff66;
+      font-family: monospace;
+      padding: 6px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    button:hover {
+      background-color: #00ff66;
+      color: black;
+    }
+
+    #output {
+      background: #010101;
+      border: 1px dashed #00ff66;
+      padding: 12px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+      min-height: 100px;
+    }
+
+    .note {
+      color: #aaa;
+      font-size: 0.85em;
+    }
+
+    .highlight {
+      background: #00ff66;
+      color: #000;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <div class="section-title">[ LOGIN BYPASS LAB ]</div>
+    <p class="note">Try inputs like <code>' OR 1=1--</code> or incorrect login pairs.</p>
+    <form onsubmit="simulateLogin(event)">
+      <label for="username">Username:</label>
+      <input type="text" id="username">
+      <label for="password">Password:</label>
+      <input type="password" id="password">
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="login-result" style="margin-top:10px;"></div>
+
+    <div class="section-title">[ DIRECTORY ENUMERATION LAB ]</div>
+    <p class="note">Try common paths like <code>/admin</code>, <code>/hidden</code>, <code>/robots.txt</code></p>
+    <input id="pathInput" placeholder="/path/to/scan">
+    <button onclick="simulateDirScan()">Scan</button>
+
+    <div class="section-title">[ XSS INJECTION LAB ]</div>
+    <p class="note">Enter input like <code>&lt;script&gt;alert('XSS')&lt;/script&gt;</code></p>
+    <input id="xssInput" placeholder="Enter malicious input">
+    <button onclick="simulateXSS()">Inject</button>
+
+    <div id="output">System initialized. Awaiting interaction...</div>
+  </div>
+
+  <script>
+    const output = document.getElementById('output');
+    const loginResult = document.getElementById('login-result');
+
+    function simulateLogin(event) {
+      event.preventDefault();
+      const user = document.getElementById('username').value.toLowerCase();
+      const pass = document.getElementById('password').value.toLowerCase();
+
+      const payloads = ["' or 1=1--", "' or '1'='1", "' or 1=1#", "'--"];
+      let bypassed = payloads.some(payload => user.includes(payload) || pass.includes(payload));
+
+      if (bypassed) {
+        loginResult.innerHTML = "<span class='highlight'>[!] Login bypassed via SQL injection. Access granted as admin.</span>";
+      } else if (user === "admin" && pass === "admin123") {
+        loginResult.innerHTML = "[+] Login successful. Standard access.";
+      } else {
+        loginResult.innerHTML = "[-] Login failed. Invalid credentials.";
+      }
+    }
+
+    function simulateDirScan() {
+      const path = document.getElementById('pathInput').value.toLowerCase();
+      let msg = "";
+
+      switch (path) {
+        case "/admin":
+          msg = "[200 OK] /admin exists — protected route.";
+          break;
+        case "/robots.txt":
+          msg = "[200 OK] Disallow: /secrets/";
+          break;
+        case "/hidden":
+          msg = "[403 Forbidden] Path exists, access denied.";
+          break;
+        default:
+          msg = "[404 Not Found] Directory does not exist.";
+      }
+
+      output.innerText = `> SCANNING ${path} ...\n${msg}`;
+    }
+
+    function simulateXSS() {
+      const input = document.getElementById('xssInput').value;
+      let safeInput = input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+      if (input.includes("<script>")) {
+        output.innerHTML = "[!] Potential XSS detected. Payload escaped.<br><br>Sanitized Output: <br>" + safeInput;
+      } else {
+        output.innerHTML = "[+] Input stored safely.<br><br>Sanitized Output: <br>" + safeInput;
+      }
+    }
+  </script>
+</body>
+</html>

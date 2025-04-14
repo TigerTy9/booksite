@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support Me - Ty Thomasson</title>
+    <style>
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 1px #FFD700, 0 0 3px #FFD700, 0 0 5px #FFD700; }
+            50% { text-shadow: 0 0 2px #FFEA00, 0 0 4px #FFEA00, 0 0 6px #FFEA00; }
+            100% { text-shadow: 0 0 1px #FFD700, 0 0 3px #FFD700, 0 0 5px #FFD700; }
+        }
+        @keyframes hackerText {
+            0% { opacity: 0.1; }
+            50% { opacity: 1; }
+            100% { opacity: 0.1; }
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, #0a0a0a, #000);
+            color: #FFD700;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            overflow: auto;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            font-size: 3em;
+            text-transform: uppercase;
+            animation: neonGlow 1.5s infinite alternate;
+        }
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(transparent, rgba(255, 255, 255, 0.02) 1px, transparent 2px);
+            z-index: 1;
+            pointer-events: none;
+        }
+        .back-link {
+            font-size: 1.3em;
+            display: inline-block;
+            color: #00FF00;
+            text-decoration: none;
+            border: 2px solid #00FF00;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 30px;
+            transition: all 0.3s ease-in-out;
+        }
+        .back-link:hover {
+            background: #00FF00;
+            color: black;
+            box-shadow: 0 0 10px #00FF00;
+        }
+    </style>
+</head>
+<body>
+    <div class="scanlines"></div>
+    <div class="container">
+        <h1>Support Me</h1>
+        <p>Your support helps me continue creating, writing, and sharing my work. If you enjoy my content, please consider donating!</p>
+
+        <form action="https://www.paypal.com/donate" method="post" target="_top">
+            <input type="hidden" name="business" value="XY5NTQ89ZXNAJ" />
+            <input type="hidden" name="no_recurring" value="0" />
+            <input type="hidden" name="currency_code" value="USD" />
+            <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
+            <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+        </form>
+        <br>
+        <br>
+        <a href="index.html" class="back-link">Back to Main Page</a>
+
+    </div>
+</body>
+</html>

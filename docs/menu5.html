@@ -1,0 +1,47 @@
+<div class="red-terminal">
+    <div class="status-bar">
+      [ USER: <span id="user-name">Guest</span> | REBELLION: <span id="rebellion-lvl">0</span> | STATUS: ACTIVE ]
+    </div>
+    <div class="nav-links">
+      <a href="/root.html">ROOT</a>
+      <a href="/breach.html">BREACH</a>
+      <a href="/trace.html">TRACE</a>
+      <a href="/exfil.html">EXFIL</a>
+      <a href="/abort.html">ABORT</a>
+    </div>
+  </div>
+  
+  <style>
+    .red-terminal {
+      background-color: #1a0000;
+      color: #ff4d4d;
+      font-family: 'Courier New', monospace;
+      padding: 12px;
+      border-bottom: 2px dashed #ff4d4d;
+    }
+  
+    .status-bar {
+      border-bottom: 1px dashed #ff4d4d;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+  
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+  
+    .nav-links a {
+      color: #ff4d4d;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+  
+    .nav-links a:hover {
+      color: #fff;
+      text-shadow: 0 0 6px #ff0000;
+    }
+  </style>
+  

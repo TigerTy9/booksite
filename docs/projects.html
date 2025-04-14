@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLACKBOX :: Projects</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #00ff66;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+    }
+
+    .terminal {
+      max-width: 800px;
+      margin: auto;
+      border: 1px solid #00ff66;
+      padding: 20px;
+    }
+
+    .section-title {
+      font-size: 1.4em;
+      color: #ff00ff;
+      text-shadow: 0 0 6px #ff00ff;
+      margin-bottom: 10px;
+    }
+
+    .project-block {
+      margin-bottom: 40px;
+    }
+
+    .label {
+      color: #0ff;
+      margin-top: 8px;
+    }
+
+    a {
+      color: #0ff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .description {
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    .meta {
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<div id="inject-menu"></div>
+<script>
+  fetch('/menu7.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('inject-menu').innerHTML = html;
+
+      // OPTIONAL: Populate user and rebellion level dynamically
+      document.getElementById('user-name').textContent = 'Ty';
+      document.getElementById('rebellion-lvl').textContent = '7';
+    });
+</script>
+
+<body>
+  <div class="terminal">
+    <div class="section-title">[BLACKBOX INTERFACE] :: PROJECTS</div>
+
+    <!-- Project: BotBridgeAI -->
+    <div class="project-block">
+      <div class="label">> Project Name:</div>
+      <div>BotBridgeAI</div>
+
+      <div class="label">> Status:</div>
+      <div>In Development</div>
+
+      <div class="label">> Description:</div>
+      <div class="description">
+        BotBridgeAI is a personal project focused on building an accessible AI service platform.
+        It's designed to be lightweight and potentially decentralized, with the goal of supporting chatbot and AI-powered tools.
+        Development is ongoing, and the system is evolving around experimentation with infrastructure, deployment, and access models.
+      </div>
+
+      <div class="label">> Website:</div>
+      <div><a href="https://botbridge.net" target="_blank">https://botbridge.net</a></div>
+
+      <div class="meta">Last updated: January 2025</div>
+    </div>
+
+    <!-- Project: Cyber Restricted -->
+    <div class="project-block">
+      <div class="label">> Project Name:</div>
+      <div>Cyber Restricted (Story Series)</div>
+
+      <div class="label">> Status:</div>
+      <div>Active Development</div>
+
+      <div class="label">> Description:</div>
+      <div class="description">
+        Cyber Restricted is a sci-fi story series centered around surveillance, rebellion, and identity in a digitally controlled society.
+        It follows the journey of Ender Nexus, a student who uncovers hidden truths about neural implants, power, and control.
+        The series explores the boundary between consciousness and code, featuring glitchy systems, secret terminals, and a hidden war for digital freedom.
+        A companion web interface is in progress to match the story's immersive cyberpunk aesthetic.
+      </div>
+
+      <div class="label">> Related Media:</div>
+      <div><a href="/books.html">Cyber Restricted UI (demo)</a></div>
+
+      <div class="meta">Last updated: March 2025</div>
+    </div>
+
+    <div class="project-block">
+        <div class="label">> Project Name:</div>
+        <div>Elites: Fallen Order (Videogame)</div>
+  
+        <div class="label">> Status:</div>
+        <div>Dropped for now</div>
+  
+        <div class="label">> Description:</div>
+        <div class="description">
+            The video game I was designing that is based off the vitural world Ender creates using his mind.
+        </div>
+  
+        <div class="label">> Related Media:</div>
+        <div><a href="https://elites-of-order.wixsite.com/home">Elites of the Order site</a></div>
+  
+        <div class="meta">Last updated: October 2021</div>
+      </div>
+
+      <!-- Project: Divulgations (Minecraft Modpack) -->
+<div class="project-block">
+    <div class="label">> Project Name:</div>
+    <div>Divulgations (Minecraft Modpack)</div>
+  
+    <div class="label">> Status:</div>
+    <div>Released</div>
+  
+    <div class="label">> Description:</div>
+    <div class="description">
+      Divulgations is a kitchen sink Minecraft modpack for 1.12.2, inspired by classics like FTB Revelations and Infinity Evolved.
+      It features enhanced cave generation, new dimensions, biome diversity, custom tools, crossbreeding systems, and tech mods like Applied Energistics 2.
+      Designed to let players explore, automate, and experiment freely in a rich, modded world.
+    </div>
+  
+    <div class="label">> Platform:</div>
+    <div><a href="https://www.curseforge.com/minecraft/modpacks/divulgations" target="_blank">CurseForge</a></div>
+  
+    <div class="meta">Last updated: May 2022</div>
+  </div>
+  
+  <!-- Project: Evulgations (Minecraft Modpack) -->
+  <div class="project-block">
+    <div class="label">> Project Name:</div>
+    <div>Evulgations (Minecraft Modpack)</div>
+  
+    <div class="label">> Status:</div>
+    <div>Released</div>
+  
+    <div class="label">> Description:</div>
+    <div class="description">
+      Evulgations is the evolved sequel to Divulgations, built for Minecraft 1.18.2 with over 300 biomes and massive exploration potential.
+      Dive into dimensions like Everbright and Everdawn, tackle powerful bosses, and harness modded systems like Botania, RFTools, and Tinkers Construct.
+      Optimized for performance, this pack offers endless adventures for players seeking both magic and technology.
+    </div>
+  
+    <div class="label">> Platform:</div>
+    <div><a href="https://www.curseforge.com/minecraft/modpacks/evulgations" target="_blank">CurseForge</a></div>
+  
+    <div class="meta">Last updated: April 2023</div>
+  </div>
+  
+  </div>
+</body>
+</html>
