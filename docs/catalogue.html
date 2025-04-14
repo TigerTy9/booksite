@@ -26,6 +26,18 @@
             display: none;
         }
     </style>
+    <div id="inject-menu"></div>
+    <script>
+      fetch('/menu7.html')
+        .then(res => res.text())
+        .then(html => {
+          document.getElementById('inject-menu').innerHTML = html;
+    
+          // OPTIONAL: Populate user and rebellion level dynamically
+          document.getElementById('user-name').textContent = 'Ty';
+          document.getElementById('rebellion-lvl').textContent = '7';
+        });
+    </script>
     <script>
         async function loadRewards() {
             const token = localStorage.getItem("jwt");
