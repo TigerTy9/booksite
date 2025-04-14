@@ -53,15 +53,17 @@
                 console.log("Reward unlock check:", data); // Debugging log to see the response
 
                 // Display the congratulatory message regardless of the reward status
-                document.body.innerHTML = `
-                    <div class="congratulations-message">
-                        🎉 Congratulations! You've unlocked this special reward!
-                    </div>
-                `;
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('congratulations-message');
+                messageDiv.innerHTML = '🎉 Congratulations! You\'ve unlocked this special reward!';
+                document.body.appendChild(messageDiv);
 
                 if (!data.unlocked) {
                     // If the reward isn't unlocked, show an error message
-                    document.body.innerHTML += `<div class="error-message">You have not unlocked this reward yet. Please check the catalogue.</div>`;
+                    const errorMessage = document.createElement('div');
+                    errorMessage.classList.add('error-message');
+                    errorMessage.innerHTML = 'You have not unlocked this reward yet. Please check the catalogue.';
+                    document.body.appendChild(errorMessage);
                 } else {
                     // If unlocked, display the PDF viewer
                     showPDF();
@@ -69,7 +71,10 @@
             } catch (error) {
                 console.error("Error verifying reward:", error);
                 // If error, show an error message
-                document.body.innerHTML += `<div class="error-message">There was an issue verifying your reward. Please try again later.</div>`;
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('error-message');
+                errorMessage.innerHTML = 'There was an issue verifying your reward. Please try again later.';
+                document.body.appendChild(errorMessage);
             }
         }
 
@@ -87,26 +92,23 @@
             // Append the PDF container to the body and make it visible
             document.body.appendChild(pdfContainer);
             pdfContainer.style.display = 'block'; // Make the PDF visible
-            
-            fetch('/menu7.html')
-                .then(res => res.text())
-                .then(html => {
-                document.getElementById('inject-menu').innerHTML = html;
-            
-                // OPTIONAL: Populate user and rebellion level dynamically
-                document.getElementById('user-name').textContent = 'Ty';
-                document.getElementById('rebellion-lvl').textContent = '7';
-                });
         }
 
         window.onload = checkAccess;
     </script>
 </head>
-<div id="inject-menu"></div>
-    <script>
-     
-    </script>
 <body>
-    <!-- Content will be dynamically inserted by the script -->
+    <div id="inject-menu"></div>
+    <script>
+        fetch('/menu7.html')
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('inject-menu').innerHTML = html;
+            
+                // OPTIONAL: Populate user and rebellion level dynamically
+                document.getElementById('user-name').textContent = 'Ty';
+                document.getElementById('rebellion-lvl').textContent = '7';
+            });
+    </script>
 </body>
 </html>
