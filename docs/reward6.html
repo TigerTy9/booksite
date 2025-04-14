@@ -87,6 +87,16 @@
             // Append the PDF container to the body and make it visible
             document.body.appendChild(pdfContainer);
             pdfContainer.style.display = 'block'; // Make the PDF visible
+            
+            fetch('/menu7.html')
+                .then(res => res.text())
+                .then(html => {
+                document.getElementById('inject-menu').innerHTML = html;
+            
+                // OPTIONAL: Populate user and rebellion level dynamically
+                document.getElementById('user-name').textContent = 'Ty';
+                document.getElementById('rebellion-lvl').textContent = '7';
+                });
         }
 
         window.onload = checkAccess;
@@ -94,15 +104,7 @@
 </head>
 <div id="inject-menu"></div>
     <script>
-      fetch('/menu7.html')
-        .then(res => res.text())
-        .then(html => {
-          document.getElementById('inject-menu').innerHTML = html;
-    
-          // OPTIONAL: Populate user and rebellion level dynamically
-          document.getElementById('user-name').textContent = 'Ty';
-          document.getElementById('rebellion-lvl').textContent = '7';
-        });
+     
     </script>
 <body>
     <!-- Content will be dynamically inserted by the script -->
